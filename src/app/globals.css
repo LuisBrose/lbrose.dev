@@ -133,7 +133,7 @@
 }
 
 .github-card img {
-  @apply block;
+  @apply block w-full;
 }
 
 .linkedin-badge-dark {
@@ -175,4 +175,83 @@
   border: none !important;
   overflow: hidden !important;
   pointer-events: auto;
+}
+
+.card-glow {
+  --glow-start: 0;
+  position: relative;
+  isolation: isolate;
+}
+
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from 180deg,
+    hsl(350 95% 55%),
+    hsl(25 95% 55%),
+    hsl(55 90% 55%),
+    hsl(140 65% 50%),
+    hsl(200 90% 60%),
+    hsl(260 85% 60%),
+    hsl(310 85% 55%),
+    hsl(350 95% 55%)
+  );
+  -webkit-mask:
+    conic-gradient(
+      from calc(var(--glow-start, 0) * 1deg),
+      transparent 0deg, white 35deg, white 65deg, transparent 100deg
+    ),
+    linear-gradient(#fff 0 0) content-box;
+  -webkit-mask-composite: source-out;
+  mask:
+    conic-gradient(
+      from calc(var(--glow-start, 0) * 1deg),
+      transparent 0deg, white 35deg, white 65deg, transparent 100deg
+    ),
+    linear-gradient(#fff 0 0) content-box;
+  mask-composite: subtract;
+  opacity: calc(var(--glow-opacity, 0) * 0.6);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.card-glow::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  padding: 4px;
+  background: conic-gradient(
+    from 180deg,
+    hsl(350 95% 55%),
+    hsl(25 95% 55%),
+    hsl(55 90% 55%),
+    hsl(140 65% 50%),
+    hsl(200 90% 60%),
+    hsl(260 85% 60%),
+    hsl(310 85% 55%),
+    hsl(350 95% 55%)
+  );
+  -webkit-mask:
+    conic-gradient(
+      from calc(var(--glow-start, 0) * 1deg),
+      transparent 0deg, white 35deg, white 65deg, transparent 100deg
+    ),
+    linear-gradient(#fff 0 0) content-box;
+  -webkit-mask-composite: source-out;
+  mask:
+    conic-gradient(
+      from calc(var(--glow-start, 0) * 1deg),
+      transparent 0deg, white 35deg, white 65deg, transparent 100deg
+    ),
+    linear-gradient(#fff 0 0) content-box;
+  mask-composite: subtract;
+  filter: blur(8px);
+  opacity: calc(var(--glow-opacity, 0) * 0.35);
+  pointer-events: none;
+  z-index: -1;
 }

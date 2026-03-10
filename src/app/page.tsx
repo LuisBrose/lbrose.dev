@@ -7,6 +7,8 @@ import { ProductCard } from "@/components/product-card"
 import { LinkedinBadgeSkeleton } from "@/components/linkedin-badge-skeleton"
 import { LinkedinBadgeFallback } from "@/components/linkedin-badge-fallback"
 import { useLinkedinBadge } from "@/hooks/use-linkedin-badge"
+import { GlowCard } from "@/components/glow-card"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const products = [
   {
@@ -29,6 +31,8 @@ export default function Home() {
   const [copied, setCopied] = useState(false)
   const [githubStreakFailed, setGithubStreakFailed] = useState(false)
   const [githubLangsFailed, setGithubLangsFailed] = useState(false)
+  const [githubStreakLoaded, setGithubStreakLoaded] = useState(false)
+  const [githubLangsLoaded, setGithubLangsLoaded] = useState(false)
   const [mounted, setMounted] = useState(false)
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
@@ -87,96 +91,110 @@ export default function Home() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-6 mt-12">
-          <div className="github-card">
-            {githubStreakFailed ? (
-              <a
-                href="https://github.com/LuisBrose"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 px-4 py-3"
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
-                  <GithubIcon className="h-5 w-5" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold truncate">LuisBrose</p>
-                  <p className="text-xs text-muted-foreground">github.com/LuisBrose</p>
-                </div>
-              </a>
-            ) : (
-              <a href="https://github.com/LuisBrose" target="_blank" rel="noopener noreferrer">
-                <img
-                  src={mounted && isDark ? "/gh-streak-dark.svg" : "/gh-streak.svg"}
-                  alt="GitHub contribution streak for LuisBrose"
-                  onError={() => setGithubStreakFailed(true)}
-                />
-              </a>
-            )}
-            <div className="mt-2">
-              {githubLangsFailed ? (
+          <GlowCard className="rounded-lg">
+            <div className="github-card">
+              {githubStreakFailed ? (
                 <a
-                  href="https://github.com/LuisBrose?tab=repositories"
+                  href="https://github.com/LuisBrose"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground"
+                  className="flex items-center gap-3 px-4 py-3"
                 >
-                  <GithubIcon className="h-4 w-4" />
-                  <span>Top languages</span>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+                    <GithubIcon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold truncate">LuisBrose</p>
+                    <p className="text-xs text-muted-foreground">github.com/LuisBrose</p>
+                  </div>
                 </a>
               ) : (
-                <img
-                  src={mounted && isDark ? "/gh-langs-dark.svg" : "/gh-langs.svg"}
-                  alt="Top languages for LuisBrose"
-                  onError={() => setGithubLangsFailed(true)}
-                />
+                <a href="https://github.com/LuisBrose" target="_blank" rel="noopener noreferrer" className="relative block">
+                  {!githubStreakLoaded && <Skeleton className="absolute inset-0 rounded-none" />}
+                  <img
+                    ref={(el) => { if (el?.complete && el.naturalWidth > 0) setGithubStreakLoaded(true) }}
+                    src={mounted && isDark ? "/gh-streak-dark.svg" : "/gh-streak.svg"}
+                    alt="GitHub contribution streak for LuisBrose"
+                    onLoad={() => setGithubStreakLoaded(true)}
+                    onError={() => setGithubStreakFailed(true)}
+                    className={githubStreakLoaded ? "opacity-100" : "opacity-0"}
+                  />
+                </a>
               )}
+              <div className="mt-2">
+                {githubLangsFailed ? (
+                  <a
+                    href="https://github.com/LuisBrose?tab=repositories"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground"
+                  >
+                    <GithubIcon className="h-4 w-4" />
+                    <span>Top languages</span>
+                  </a>
+                ) : (
+                  <div className="relative">
+                    {!githubLangsLoaded && <Skeleton className="absolute inset-0 rounded-none" />}
+                    <img
+                      ref={(el) => { if (el?.complete && el.naturalWidth > 0) setGithubLangsLoaded(true) }}
+                      src={mounted && isDark ? "/gh-langs-dark.svg" : "/gh-langs.svg"}
+                      alt="Top languages for LuisBrose"
+                      onLoad={() => setGithubLangsLoaded(true)}
+                      onError={() => setGithubLangsFailed(true)}
+                      className={githubLangsLoaded ? "opacity-100" : "opacity-0"}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </GlowCard>
           
-          <div className="linkedin-badge-wrapper">
-            {isLinkedinBadgeLoading && !showLinkedinFallback ? (
-              <LinkedinBadgeSkeleton />
-            ) : null}
-            {showLinkedinFallback ? (
-              <LinkedinBadgeFallback />
-            ) : null}
-            <div
-              className="badge-base LI-profile-badge linkedin-badge-light"
-              data-locale="de_DE"
-              data-size="large"
-              data-theme="light"
-              data-type="HORIZONTAL"
-              data-vanity="luisbrose"
-              data-version="v1"
-            >
-              <a
-                className="badge-base__link LI-simple-link"
-                href="https://de.linkedin.com/in/luisbrose?trk=profile-badge"
-                target="_blank"
-                rel="noopener noreferrer"
+          <GlowCard className="rounded-[10px]">
+            <div className="linkedin-badge-wrapper">
+              {isLinkedinBadgeLoading && !showLinkedinFallback ? (
+                <LinkedinBadgeSkeleton />
+              ) : null}
+              {showLinkedinFallback ? (
+                <LinkedinBadgeFallback />
+              ) : null}
+              <div
+                className="badge-base LI-profile-badge linkedin-badge-light"
+                data-locale="de_DE"
+                data-size="large"
+                data-theme="light"
+                data-type="HORIZONTAL"
+                data-vanity="luisbrose"
+                data-version="v1"
               >
-                Luis Brose
-              </a>
-            </div>
-            <div
-              className="badge-base LI-profile-badge linkedin-badge-dark"
-              data-locale="de_DE"
-              data-size="large"
-              data-theme="dark"
-              data-type="HORIZONTAL"
-              data-vanity="luisbrose"
-              data-version="v1"
-            >
-              <a
-                className="badge-base__link LI-simple-link"
-                href="https://de.linkedin.com/in/luisbrose?trk=profile-badge"
-                target="_blank"
-                rel="noopener noreferrer"
+                <a
+                  className="badge-base__link LI-simple-link"
+                  href="https://de.linkedin.com/in/luisbrose?trk=profile-badge"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Luis Brose
+                </a>
+              </div>
+              <div
+                className="badge-base LI-profile-badge linkedin-badge-dark"
+                data-locale="de_DE"
+                data-size="large"
+                data-theme="dark"
+                data-type="HORIZONTAL"
+                data-vanity="luisbrose"
+                data-version="v1"
               >
-                Luis Brose
-              </a>
+                <a
+                  className="badge-base__link LI-simple-link"
+                  href="https://de.linkedin.com/in/luisbrose?trk=profile-badge"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Luis Brose
+                </a>
+              </div>
             </div>
-          </div>
+          </GlowCard>
         </div>
       </section>
 
