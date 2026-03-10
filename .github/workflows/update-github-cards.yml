@@ -1,0 +1,36 @@
+name: Update GitHub cards
+
+on:
+  schedule:
+    # Every day at 03:00 UTC
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-cards:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update GitHub streak cards
+        run: |
+          curl "https://streak-stats.demolab.com/?user=LuisBrose&theme=default&hide_border=true" -o public/gh-streak.svg
+          curl "https://streak-stats.demolab.com/?user=LuisBrose&theme=dark&hide_border=true" -o public/gh-streak-dark.svg
+
+      - name: Update GitHub languages cards
+        run: |
+          curl "https://readme-stats-fast.vercel.app/api/top-langs/?username=LuisBrose&layout=compact&theme=default&hide_border=true" -o public/gh-langs.svg
+          curl "https://readme-stats-fast.vercel.app/api/top-langs/?username=LuisBrose&layout=compact&theme=dark&hide_border=true" -o public/gh-langs-dark.svg
+
+      - name: Commit and push updated cards
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update GitHub streak and language cards"
+          file_pattern: |
+            public/gh-streak.svg
+            public/gh-streak-dark.svg
+            public/gh-langs.svg
+            public/gh-langs-dark.svg
+
