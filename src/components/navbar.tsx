@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
 
@@ -28,6 +29,19 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center mx-auto px-4 max-w-4xl">
+        <Link
+          href="#home"
+          onClick={handleAnchorClick("#home")}
+          className="mr-4 inline-flex items-center"
+        >
+          <Image
+            src="/icon/android-chrome-192x192.png"
+            alt="Luis Brose logo"
+            width={32}
+            height={32}
+            className="rounded invert dark:invert-0"
+          />
+        </Link>
         <nav className="flex items-center space-x-6 flex-1">
           {navItems.map((item) => (
             <Link
