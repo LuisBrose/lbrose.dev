@@ -42,3 +42,4 @@ jobs:
           commit_message: "chore: update GitHub streak and language cards"
           file_pattern: public/gh-*.svg
           disable_globbing: true
+          token: ${{ secrets.PAT_GITHUB_CARDS }}
