@@ -57,8 +57,8 @@ export function ProductCard({
           </div>
         )}
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription className="mt-2">{description}</CardDescription>
+          <CardTitle className="text-lg">{title}</CardTitle>
+          <CardDescription className="mt-2 text-base">{description}</CardDescription>
           {note && (
             <p className="mt-1 text-[10px] text-muted-foreground/80 italic">
               {note}
@@ -66,25 +66,25 @@ export function ProductCard({
           )}
         </CardHeader>
         <div className="px-6 pb-4">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-3">
             <Link
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted transition-colors"
+              className="inline-flex items-center rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-muted transition-colors"
             >
               <span className="mr-1">{urlLabel ?? "Visit"}</span>
-              <ExternalLink className="h-3 w-3" />
+              <ExternalLink className="h-4 w-4" />
             </Link>
             {secondaryUrl && (
               <Link
                 href={secondaryUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted transition-colors"
+                className="inline-flex items-center rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-muted transition-colors"
               >
                 <span className="mr-1">{secondaryLabel ?? "Open VSX"}</span>
-                <ExternalLink className="h-3 w-3" />
+                <ExternalLink className="h-4 w-4" />
               </Link>
             )}
           </div>

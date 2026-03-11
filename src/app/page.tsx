@@ -13,14 +13,15 @@ import { Skeleton } from "@/components/ui/skeleton"
 const products = [
   {
     title: "Force Push Button",
-    description: "VS Code extension that adds a dedicated, confirmable force-push button to your toolbar.",
+    description: "A VS Code extension that streamlines force-pushing workflows with dedicated buttons in the Source Control view. Features a main button that opens a repository selector for multi-repo workspaces, plus individual buttons in each repository's title bar for quick access. All buttons intelligently activate only when there are changes to push, making force-pushing more convenient.",
     url: "https://marketplace.visualstudio.com/items?itemName=LuisBrose.force-push-button",
     urlLabel: "VS Code Marketplace",
     secondaryUrl: "https://open-vsx.org/extension/luisbrose/force-push-button",
     secondaryLabel: "Open VSX",
     images: [
-      { src: "/thumbnails/force-push-1.png", alt: "Force Push Button extension in the VS Code sidebar" },
-      { src: "/thumbnails/force-push-2.png", alt: "Force Push Button force-push confirmation dialog" },
+      { src: "/thumbnails/force-push-button-1.png", alt: "Force Push Button VS Code Extension - Showcase" },
+      { src: "/thumbnails/force-push-button-2.png", alt: "Force Push Button VS Code Extension - Store Page" },
+      { src: "/thumbnails/force-push-button-3.png", alt: "Force Push Button VS Code Extension - Settings" },
     ],
     isBuiltByMe: true,
   },
@@ -80,44 +81,44 @@ export default function Home() {
         className="container mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[calc(100vh-3.5rem)] scroll-mt-20"
       >
         <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Luis Brose</h1>
-        <p className="text-muted-foreground mt-2">Software Developer</p>
+        <p className="mt-2 text-lg text-muted-foreground">Software Developer</p>
         
         <div className="flex flex-wrap justify-center gap-4 mt-8">
           <a
             href="https://www.linkedin.com/in/luisbrose/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center h-9 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors"
+            className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors"
           >
-            <LinkedinIcon className="mr-2 h-4 w-4" />
+            <LinkedinIcon className="mr-2 h-5 w-5" />
             LinkedIn
           </a>
           <a
             href="https://github.com/LuisBrose"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center h-9 px-4 py-2 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+            className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
           >
-            <GithubIcon className="mr-2 h-4 w-4" />
+            <GithubIcon className="mr-2 h-5 w-5" />
             GitHub
           </a>
           <a
             href={`mailto:${email}`}
-            className="inline-flex items-center justify-center h-9 px-4 py-2 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+            className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
           >
-            <Mail className="mr-2 h-4 w-4" />
+            <Mail className="mr-2 h-5 w-5" />
             Email
           </a>
           <button
             onClick={copyEmail}
-            className="inline-flex items-center justify-center h-9 px-4 py-2 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+            className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
           >
-            {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+            {copied ? <Check className="mr-2 h-5 w-5" /> : <Copy className="mr-2 h-5 w-5" />}
             {copied ? "Copied" : "Copy Email"}
           </button>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-6 mt-12">
+        <div className="flex flex-wrap items-start justify-center gap-6 mt-12">
           <GlowCard className="rounded-lg">
             <div className="github-card">
               {githubStreakFailed ? (
@@ -228,7 +229,7 @@ export default function Home() {
       <section className="container mx-auto px-4 py-16 max-w-4xl space-y-10">
         <div id="projects" className="scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             {products
               .filter((product) => product.isBuiltByMe)
               .map((product) => (
@@ -239,7 +240,7 @@ export default function Home() {
 
         <div id="hosting" className="scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">Hosting</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             {products
               .filter((product) => !product.isBuiltByMe)
               .map((product) => (

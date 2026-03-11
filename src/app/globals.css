@@ -125,6 +125,7 @@
   }
   html {
     @apply font-sans;
+    font-size: 120%;
   }
 }
 
@@ -181,6 +182,7 @@
   --glow-start: 0;
   position: relative;
   isolation: isolate;
+  align-self: flex-start;
 }
 
 .card-glow::before {

@@ -49,7 +49,7 @@ export function Navbar() {
               href={item.href}
               onClick={handleAnchorClick(item.href)}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-foreground/80",
+                "text-base font-medium transition-colors hover:text-foreground/80",
                 "text-foreground/60"
               )}
             >

@@ -27,7 +27,7 @@ export function ProjectCard({
           <CardTitle>{title}</CardTitle>
         </CardHeader>
         <CardContent className="flex-1">
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <p className="text-base text-muted-foreground">{description}</p>
           <div className="flex flex-wrap gap-2 mt-4">
             {techStack.map((tech) => (
               <Badge key={tech} variant="secondary">
@@ -36,15 +36,15 @@ export function ProjectCard({
             ))}
           </div>
         </CardContent>
-        <CardFooter className="gap-2">
+        <CardFooter className="gap-3">
           {githubUrl && (
             <Link
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-7 px-2.5 text-xs font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+              className="inline-flex items-center justify-center h-8 px-3 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
             >
-              <Github className="mr-2 h-3.5 w-3.5" />
+              <Github className="mr-2 h-4 w-4" />
               Code
             </Link>
           )}
@@ -53,9 +53,9 @@ export function ProjectCard({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-7 px-2.5 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors"
+              className="inline-flex items-center justify-center h-8 px-3 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors"
             >
-              <ExternalLink className="mr-2 h-3.5 w-3.5" />
+              <ExternalLink className="mr-2 h-4 w-4" />
               Demo
             </Link>
           )}
