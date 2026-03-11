@@ -1,54 +1,93 @@
+"use client"
+
 import Link from "next/link"
+import Image from "next/image"
 import { ExternalLink } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { GlowCard } from "@/components/glow-card"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 
 interface ProductCardProps {
   title: string
   description: string
-  techStack: string[]
+  note?: string
   url: string
+  urlLabel?: string
+  secondaryUrl?: string
+  secondaryLabel?: string
+  images?: { src: string; alt: string }[]
   isBuiltByMe?: boolean
 }
 
 export function ProductCard({
   title,
   description,
-  techStack,
+  note,
   url,
+  urlLabel,
+  secondaryUrl,
+  secondaryLabel,
+  images,
   isBuiltByMe = false,
 }: ProductCardProps) {
   return (
     <GlowCard className="rounded-xl">
       <Card>
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <CardTitle>{title}</CardTitle>
-            {isBuiltByMe && (
-              <Badge variant="secondary">Built</Badge>
-            )}
+        {images && images.length > 0 && (
+          <div className="relative w-full">
+            <Carousel className="w-full">
+              <CarouselContent>
+                {images.map((image) => (
+                  <CarouselItem key={image.src}>
+                    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-t-xl">
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        sizes="(min-width: 768px) 384px, 100vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
+        )}
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
           <CardDescription className="mt-2">{description}</CardDescription>
+          {note && (
+            <p className="mt-1 text-[10px] text-muted-foreground/80 italic">
+              {note}
+            </p>
+          )}
         </CardHeader>
         <div className="px-6 pb-4">
           <div className="flex flex-wrap gap-2">
-            {techStack.map((tech) => (
-              <Badge key={tech} variant="outline">
-                {tech}
-              </Badge>
-            ))}
+            <Link
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted transition-colors"
+            >
+              <span className="mr-1">{urlLabel ?? "Visit"}</span>
+              <ExternalLink className="h-3 w-3" />
+            </Link>
+            {secondaryUrl && (
+              <Link
+                href={secondaryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted transition-colors"
+              >
+                <span className="mr-1">{secondaryLabel ?? "Open VSX"}</span>
+                <ExternalLink className="h-3 w-3" />
+              </Link>
+            )}
           </div>
-        </div>
-        <div className="px-6 pb-4">
-          <Link
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-sm font-medium hover:underline"
-          >
-            Visit <ExternalLink className="ml-1 h-3 w-3" />
-          </Link>
         </div>
       </Card>
     </GlowCard>
