@@ -6,6 +6,9 @@ on:
     - cron: "0 3 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   update-cards:
     runs-on: ubuntu-latest
@@ -16,21 +19,26 @@ jobs:
 
       - name: Update GitHub streak cards
         run: |
-          curl "https://streak-stats.demolab.com/?user=LuisBrose&theme=default&hide_border=true" -o public/gh-streak.svg
-          curl "https://streak-stats.demolab.com/?user=LuisBrose&theme=dark&hide_border=true" -o public/gh-streak-dark.svg
+          set -euo pipefail
+          TS="$(date +%s)"
+          curl -fsSL "https://streak-stats.demolab.com/?user=LuisBrose&theme=default&hide_border=true&ts=${TS}" -o public/gh-streak.svg
+          curl -fsSL "https://streak-stats.demolab.com/?user=LuisBrose&theme=dark&hide_border=true&ts=${TS}" -o public/gh-streak-dark.svg
 
       - name: Update GitHub languages cards
         run: |
-          curl "https://readme-stats-fast.vercel.app/api/top-langs/?username=LuisBrose&layout=compact&theme=default&hide_border=true" -o public/gh-langs.svg
-          curl "https://readme-stats-fast.vercel.app/api/top-langs/?username=LuisBrose&layout=compact&theme=dark&hide_border=true" -o public/gh-langs-dark.svg
+          set -euo pipefail
+          TS="$(date +%s)"
+          curl -fsSL "https://readme-stats-fast.vercel.app/api/top-langs/?username=LuisBrose&layout=compact&theme=default&hide_border=true&ts=${TS}" -o public/gh-langs.svg
+          curl -fsSL "https://readme-stats-fast.vercel.app/api/top-langs/?username=LuisBrose&layout=compact&theme=dark&hide_border=true&ts=${TS}" -o public/gh-langs-dark.svg
+
+      - name: "Debug: show git diff summary"
+        run: |
+          git status --porcelain
+          git diff --stat || true
 
       - name: Commit and push updated cards
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update GitHub streak and language cards"
-          file_pattern: |
-            public/gh-streak.svg
-            public/gh-streak-dark.svg
-            public/gh-langs.svg
-            public/gh-langs-dark.svg
-
+          file_pattern: public/gh-*.svg
+          disable_globbing: true
