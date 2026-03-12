@@ -9,6 +9,7 @@ import { LinkedinBadgeFallback } from "@/components/linkedin-badge-fallback"
 import { useLinkedinBadge } from "@/hooks/use-linkedin-badge"
 import { GlowCard } from "@/components/glow-card"
 import { Skeleton } from "@/components/ui/skeleton"
+import { ParticleLogo3d } from "@/components/particle-logo-3d"
 
 const products = [
   {
@@ -95,11 +96,17 @@ export default function Home() {
     <div className="min-h-screen">
       <section
         id="home"
-        className="container mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[calc(100vh-3.5rem)] scroll-mt-20"
+        className="container mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[calc(100vh-3.5rem)] scroll-mt-20 relative"
       >
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Luis Brose</h1>
-        <p className="mt-2 text-lg text-muted-foreground">Software Developer</p>
-        
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none">
+          <div className="pointer-events-auto">
+            <ParticleLogo3d color={isDark ? "#a1a1aa" : "#1a1a1a"} />
+          </div>
+        </div>
+        <div className="relative z-10 flex flex-col items-center mt-69">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Luis Brose</h1>
+          <p className="mt-2 text-lg text-muted-foreground">Software Developer</p>
+          
         <div className="flex flex-wrap justify-center gap-4 mt-8">
           <a
             href="https://www.linkedin.com/in/luisbrose/"
@@ -148,8 +155,13 @@ export default function Home() {
             {copied ? "Copied" : "Copy Email"}
           </button>
         </div>
+        </div>
+      </section>
 
-        <div className="flex flex-wrap items-start justify-center gap-6 mt-12">
+      <section className="container mx-auto px-4 py-16 max-w-4xl">
+        <div id="about" className="scroll-mt-24">
+          <h2 className="text-2xl font-bold mb-6">About</h2>
+          <div className="flex flex-wrap items-start justify-center gap-6">
           <GlowCard className="rounded-lg">
             <div className="github-card">
               {githubStreakFailed ? (
@@ -261,6 +273,7 @@ export default function Home() {
               </div>
             </div>
           </GlowCard>
+        </div>
         </div>
       </section>
 
