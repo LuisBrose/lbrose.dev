@@ -1,5 +1,8 @@
+"use client"
+
+import { useRef } from "react"
 import Link from "next/link"
-import { Github, ExternalLink } from "lucide-react"
+import { GithubIcon, ChevronRightIcon } from "lucide-animated"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { GlowCard } from "@/components/glow-card"
@@ -20,6 +23,9 @@ export function ProjectCard({
   githubUrl,
   liveUrl,
 }: ProjectCardProps) {
+  const githubIconRef = useRef<React.ComponentRef<typeof GithubIcon>>(null)
+  const liveIconRef = useRef<React.ComponentRef<typeof ChevronRightIcon>>(null)
+
   return (
     <GlowCard className="rounded-xl">
       <Card className="flex flex-col">
@@ -43,8 +49,10 @@ export function ProjectCard({
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center h-8 px-3 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+              onMouseEnter={() => githubIconRef.current?.startAnimation()}
+              onMouseLeave={() => githubIconRef.current?.stopAnimation()}
             >
-              <Github className="mr-2 h-4 w-4" />
+              <GithubIcon ref={githubIconRef} size={16} className="mr-2" />
               Code
             </Link>
           )}
@@ -54,8 +62,10 @@ export function ProjectCard({
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center h-8 px-3 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors"
+              onMouseEnter={() => liveIconRef.current?.startAnimation()}
+              onMouseLeave={() => liveIconRef.current?.stopAnimation()}
             >
-              <ExternalLink className="mr-2 h-4 w-4" />
+              <ChevronRightIcon ref={liveIconRef} size={16} className="mr-2" />
               Demo
             </Link>
           )}

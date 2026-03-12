@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-animated"
 
 import { cn } from "@/lib/utils"
 
@@ -142,6 +142,7 @@ const CarouselPrevious = React.forwardRef<
   React.ButtonHTMLAttributes<HTMLButtonElement>
 >(({ className, ...props }, ref) => {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel()
+  const iconRef = React.useRef<React.ComponentRef<typeof ChevronLeftIcon>>(null)
 
   return (
     <button
@@ -149,6 +150,8 @@ const CarouselPrevious = React.forwardRef<
       type="button"
       onClick={scrollPrev}
       disabled={!canScrollPrev}
+      onMouseEnter={() => iconRef.current?.startAnimation()}
+      onMouseLeave={() => iconRef.current?.stopAnimation()}
       className={cn(
         "absolute flex h-7 w-7 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm backdrop-blur transition-opacity hover:bg-muted disabled:opacity-40",
         orientation === "horizontal"
@@ -158,7 +161,7 @@ const CarouselPrevious = React.forwardRef<
       )}
       {...props}
     >
-      <ChevronLeft className="h-3 w-3" />
+      <ChevronLeftIcon ref={iconRef} size={12} />
       <span className="sr-only">Previous slide</span>
     </button>
   )
@@ -170,6 +173,7 @@ const CarouselNext = React.forwardRef<
   React.ButtonHTMLAttributes<HTMLButtonElement>
 >(({ className, ...props }, ref) => {
   const { orientation, scrollNext, canScrollNext } = useCarousel()
+  const iconRef = React.useRef<React.ComponentRef<typeof ChevronRightIcon>>(null)
 
   return (
     <button
@@ -177,6 +181,8 @@ const CarouselNext = React.forwardRef<
       type="button"
       onClick={scrollNext}
       disabled={!canScrollNext}
+      onMouseEnter={() => iconRef.current?.startAnimation()}
+      onMouseLeave={() => iconRef.current?.stopAnimation()}
       className={cn(
         "absolute flex h-7 w-7 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm backdrop-blur transition-opacity hover:bg-muted disabled:opacity-40",
         orientation === "horizontal"
@@ -186,7 +192,7 @@ const CarouselNext = React.forwardRef<
       )}
       {...props}
     >
-      <ChevronRight className="h-3 w-3" />
+      <ChevronRightIcon ref={iconRef} size={12} />
       <span className="sr-only">Next slide</span>
     </button>
   )

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useLayoutEffect } from "react"
 import { useTheme } from "next-themes"
-import { GithubIcon, LinkedinIcon, Mail, Copy, Check } from "lucide-react"
+import { GithubIcon, LinkedinIcon, CopyIcon, CheckIcon, AtSignIcon } from "lucide-animated"
 import { ProductCard } from "@/components/product-card"
 import { LinkedinBadgeSkeleton } from "@/components/linkedin-badge-skeleton"
 import { LinkedinBadgeFallback } from "@/components/linkedin-badge-fallback"
@@ -65,6 +65,12 @@ export default function Home() {
   const { isLoading: isLinkedinBadgeLoading, showFallback: showLinkedinFallback } = useLinkedinBadge()
   const email = "contact@lbrose.dev"
 
+  const linkedinIconRef = useRef<React.ComponentRef<typeof LinkedinIcon>>(null)
+  const githubIconRef = useRef<React.ComponentRef<typeof GithubIcon>>(null)
+  const emailIconRef = useRef<React.ComponentRef<typeof AtSignIcon>>(null)
+  const copyIconRef = useRef<React.ComponentRef<typeof CopyIcon>>(null)
+  const checkIconRef = useRef<React.ComponentRef<typeof CheckIcon>>(null)
+
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -100,8 +106,10 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors"
+            onMouseEnter={() => linkedinIconRef.current?.startAnimation()}
+            onMouseLeave={() => linkedinIconRef.current?.stopAnimation()}
           >
-            <LinkedinIcon className="mr-2 h-5 w-5" />
+            <LinkedinIcon ref={linkedinIconRef} size={20} className="mr-2" />
             LinkedIn
           </a>
           <a
@@ -109,22 +117,34 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+            onMouseEnter={() => githubIconRef.current?.startAnimation()}
+            onMouseLeave={() => githubIconRef.current?.stopAnimation()}
           >
-            <GithubIcon className="mr-2 h-5 w-5" />
+            <GithubIcon ref={githubIconRef} size={20} className="mr-2" />
             GitHub
           </a>
           <a
             href={`mailto:${email}`}
             className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+            onMouseEnter={() => emailIconRef.current?.startAnimation()}
+            onMouseLeave={() => emailIconRef.current?.stopAnimation()}
           >
-            <Mail className="mr-2 h-5 w-5" />
+            <AtSignIcon ref={emailIconRef} size={20} className="mr-2" />
             Email
           </a>
           <button
             onClick={copyEmail}
             className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+            onMouseEnter={() => {
+              if (copied) checkIconRef.current?.startAnimation()
+              else copyIconRef.current?.startAnimation()
+            }}
+            onMouseLeave={() => {
+              checkIconRef.current?.stopAnimation()
+              copyIconRef.current?.stopAnimation()
+            }}
           >
-            {copied ? <Check className="mr-2 h-5 w-5" /> : <Copy className="mr-2 h-5 w-5" />}
+            {copied ? <CheckIcon ref={checkIconRef} size={20} className="mr-2" /> : <CopyIcon ref={copyIconRef} size={20} className="mr-2" />}
             {copied ? "Copied" : "Copy Email"}
           </button>
         </div>
@@ -140,7 +160,7 @@ export default function Home() {
                   className="flex items-center gap-3 px-4 py-3"
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
-                    <GithubIcon className="h-5 w-5" />
+                    <GithubIcon size={20} />
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold truncate">LuisBrose</p>
@@ -170,7 +190,7 @@ export default function Home() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground"
                   >
-                    <GithubIcon className="h-4 w-4" />
+                    <GithubIcon size={16} />
                     <span>Top languages</span>
                   </a>
                 ) : (

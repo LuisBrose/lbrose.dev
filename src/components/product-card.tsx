@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ExternalLink } from "lucide-react"
+import { ChevronRightIcon } from "lucide-animated"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { GlowCard } from "@/components/glow-card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
@@ -52,6 +52,9 @@ export function ProductCard({
   images,
   isBuiltByMe = false,
 }: ProductCardProps) {
+  const primaryIconRef = useRef<React.ComponentRef<typeof ChevronRightIcon>>(null)
+  const secondaryIconRef = useRef<React.ComponentRef<typeof ChevronRightIcon>>(null)
+
   return (
     <GlowCard className="rounded-xl">
       <Card>
@@ -86,9 +89,11 @@ export function ProductCard({
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-muted transition-colors"
+              onMouseEnter={() => primaryIconRef.current?.startAnimation()}
+              onMouseLeave={() => primaryIconRef.current?.stopAnimation()}
             >
               <span className="mr-1">{urlLabel ?? "Visit"}</span>
-              <ExternalLink className="h-4 w-4" />
+              <ChevronRightIcon ref={primaryIconRef} size={16} />
             </Link>
             {secondaryUrl && (
               <Link
@@ -96,9 +101,11 @@ export function ProductCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-muted transition-colors"
+                onMouseEnter={() => secondaryIconRef.current?.startAnimation()}
+                onMouseLeave={() => secondaryIconRef.current?.stopAnimation()}
               >
                 <span className="mr-1">{secondaryLabel ?? "Open VSX"}</span>
-                <ExternalLink className="h-4 w-4" />
+                <ChevronRightIcon ref={secondaryIconRef} size={16} />
               </Link>
             )}
           </div>

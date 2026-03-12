@@ -1,18 +1,30 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
 
 const navItems = [
-  { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#projects", label: "Projects" },
   { href: "#hosting", label: "Hosting" },
 ]
 
 export function Navbar() {
+  const [isHovering, setIsHovering] = useState(false)
+  const [logoRotation, setLogoRotation] = useState(0)
+
+  const handleLogoEnter = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const enteredFromLeft = event.clientX < centerX
+    const angle = (enteredFromLeft ? 1 : -1) * (8 + Math.random() * 7)
+    setLogoRotation(angle)
+    setIsHovering(true)
+  }
+
   const handleAnchorClick = (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
     if (!href.startsWith("#")) return
     event.preventDefault()
@@ -32,6 +44,8 @@ export function Navbar() {
         <Link
           href="#home"
           onClick={handleAnchorClick("#home")}
+          onMouseEnter={handleLogoEnter}
+          onMouseLeave={() => setIsHovering(false)}
           className="mr-4 inline-flex items-center"
         >
           <Image
@@ -39,7 +53,8 @@ export function Navbar() {
             alt="Luis Brose logo"
             width={32}
             height={32}
-            className="rounded invert dark:invert-0"
+            className="rounded invert dark:invert-0 transition-transform duration-300 ease-out"
+            style={{ transform: isHovering ? `scale(1.1) rotate(${logoRotation}deg)` : "scale(1) rotate(0deg)" }}
           />
         </Link>
         <nav className="flex items-center space-x-6 flex-1">
