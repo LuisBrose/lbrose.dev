@@ -130,12 +130,11 @@
 }
 
 .github-card {
-  @apply rounded-lg overflow-hidden border border-border;
-  width: 495px;
+  @apply rounded-lg overflow-hidden border border-border w-full;
 }
 
 .github-card img {
-  @apply block w-full;
+  @apply block w-full h-auto;
 }
 
 /* Hide/show LinkedIn badge fallback based on theme */

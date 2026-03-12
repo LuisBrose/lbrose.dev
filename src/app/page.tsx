@@ -162,7 +162,7 @@ export default function Home() {
         <div id="about" className="scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">About</h2>
           <div className="flex flex-wrap items-start justify-center gap-6">
-          <GlowCard className="rounded-lg">
+          <GlowCard className="rounded-lg w-full max-w-[495px] mx-auto md:mx-0">
             <div className="github-card">
               {githubStreakFailed ? (
                 <a
@@ -179,20 +179,18 @@ export default function Home() {
                     <p className="text-xs text-muted-foreground">github.com/LuisBrose</p>
                   </div>
                 </a>
-              ) : (
-                <a href="https://github.com/LuisBrose" target="_blank" rel="noopener noreferrer" className="relative block" style={{ aspectRatio: "495/195" }}>
-                  {(!mounted || !githubStreakLoaded) && <Skeleton className="absolute inset-0 rounded-none" />}
+) : (
+                <div className="relative" style={{ height: 195 }}>
+                  <Skeleton className="absolute inset-0 rounded-none" />
                   {mounted && (
                     <img
-                      ref={(el) => { if (el?.complete && el.naturalWidth > 0) setGithubStreakLoaded(true) }}
                       src={`${isDark ? "/gh-streak-dark.svg" : "/gh-streak.svg"}?t=${themeCounter}`}
                       alt="GitHub contribution streak for LuisBrose"
-                      onLoad={() => setGithubStreakLoaded(true)}
-                      onError={() => setGithubStreakFailed(true)}
-                      className={githubStreakLoaded ? "opacity-100" : "opacity-0"}
+                      className="absolute inset-0 w-full h-full object-cover z-10"
+                      suppressHydrationWarning
                     />
                   )}
-                </a>
+                </div>
               )}
               <div className="mt-2">
                 {githubLangsFailed ? (
@@ -206,16 +204,14 @@ export default function Home() {
                     <span>Top languages</span>
                   </a>
                 ) : (
-                  <div className="relative" style={{ aspectRatio: "300/165" }}>
-                    {(!mounted || !githubLangsLoaded) && <Skeleton className="absolute inset-0 rounded-none" />}
+                  <div className="relative" style={{ height: 165 }}>
+                    <Skeleton className="absolute inset-0 rounded-none" />
                     {mounted && (
                       <img
-                        ref={(el) => { if (el?.complete && el.naturalWidth > 0) setGithubLangsLoaded(true) }}
                         src={`${isDark ? "/gh-langs-dark.svg" : "/gh-langs.svg"}?t=${themeCounter}`}
                         alt="Top languages for LuisBrose"
-                        onLoad={() => setGithubLangsLoaded(true)}
-                        onError={() => setGithubLangsFailed(true)}
-                        className={githubLangsLoaded ? "opacity-100" : "opacity-0"}
+                        className="absolute inset-0 w-full h-full object-contain z-10"
+                        suppressHydrationWarning
                       />
                     )}
                   </div>
@@ -224,8 +220,8 @@ export default function Home() {
             </div>
           </GlowCard>
           
-          <GlowCard className="rounded-[10px]">
-            <div className="linkedin-badge-wrapper">
+          <GlowCard className="rounded-[10px] w-full max-w-[330px] mx-auto md:mx-0">
+            <div className="linkedin-badge-wrapper" style={{ minHeight: 277 }}>
               {isLinkedinBadgeLoading && !showLinkedinFallback && <LinkedinBadgeSkeleton />}
               {showLinkedinFallback && (
                 <>

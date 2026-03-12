@@ -16,12 +16,17 @@ export function useLinkedinBadge() {
         iframe.setAttribute("scrolling", "no")
         iframe.style.overflow = "hidden"
 
-        // Auto-size iframe height to its content (only on initial load)
+        // Auto-size iframe and wrapper height to content
         const body = doc.body || doc.documentElement
         if (body) {
           const contentHeight = body.scrollHeight
           if (contentHeight > 0) {
             iframe.style.height = `${contentHeight}px`
+            const wrapper = iframe.closest(".linkedin-badge-wrapper") as HTMLElement | null
+            if (wrapper) {
+              wrapper.style.height = `${contentHeight}px`
+              wrapper.style.setProperty("min-height", `${contentHeight}px`, "important")
+            }
           }
         }
 
