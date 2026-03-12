@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef, useLayoutEffect } from "react"
 import { useTheme } from "next-themes"
 import { GithubIcon, LinkedinIcon, Mail, Copy, Check } from "lucide-react"
 import { ProductCard } from "@/components/product-card"
@@ -60,12 +60,23 @@ export default function Home() {
   const [mounted, setMounted] = useState(false)
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
+  const prevTheme = useRef(resolvedTheme)
+  const [themeCounter, setThemeCounter] = useState(0)
   const { isLoading: isLinkedinBadgeLoading, showFallback: showLinkedinFallback } = useLinkedinBadge()
   const email = "contact@lbrose.dev"
 
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  useLayoutEffect(() => {
+    if (mounted && resolvedTheme !== prevTheme.current) {
+      prevTheme.current = resolvedTheme
+      setGithubStreakLoaded(false)
+      setGithubLangsLoaded(false)
+      setThemeCounter((c) => c + 1)
+    }
+  }, [resolvedTheme, mounted])
 
   const copyEmail = async () => {
     await navigator.clipboard.writeText(email)
@@ -142,7 +153,7 @@ export default function Home() {
                   {mounted && (
                     <img
                       ref={(el) => { if (el?.complete && el.naturalWidth > 0) setGithubStreakLoaded(true) }}
-                      src={isDark ? "/gh-streak-dark.svg" : "/gh-streak.svg"}
+                      src={`${isDark ? "/gh-streak-dark.svg" : "/gh-streak.svg"}?t=${themeCounter}`}
                       alt="GitHub contribution streak for LuisBrose"
                       onLoad={() => setGithubStreakLoaded(true)}
                       onError={() => setGithubStreakFailed(true)}
@@ -168,7 +179,7 @@ export default function Home() {
                     {mounted && (
                       <img
                         ref={(el) => { if (el?.complete && el.naturalWidth > 0) setGithubLangsLoaded(true) }}
-                        src={isDark ? "/gh-langs-dark.svg" : "/gh-langs.svg"}
+                        src={`${isDark ? "/gh-langs-dark.svg" : "/gh-langs.svg"}?t=${themeCounter}`}
                         alt="Top languages for LuisBrose"
                         onLoad={() => setGithubLangsLoaded(true)}
                         onError={() => setGithubLangsFailed(true)}
@@ -183,15 +194,13 @@ export default function Home() {
           
           <GlowCard className="rounded-[10px]">
             <div className="linkedin-badge-wrapper">
-              {isLinkedinBadgeLoading && !showLinkedinFallback ? (
-                <LinkedinBadgeSkeleton />
-              ) : null}
-              {showLinkedinFallback ? (
+              {isLinkedinBadgeLoading && !showLinkedinFallback && <LinkedinBadgeSkeleton />}
+              {showLinkedinFallback && (
                 <>
                   <LinkedinBadgeFallback theme="light" className="linkedin-badge-light" />
                   <LinkedinBadgeFallback theme="dark" className="linkedin-badge-dark" />
                 </>
-              ) : null}
+              )}
               <div
                 className="badge-base LI-profile-badge linkedin-badge-light"
                 data-locale="de_DE"
@@ -200,6 +209,7 @@ export default function Home() {
                 data-type="HORIZONTAL"
                 data-vanity="luisbrose"
                 data-version="v1"
+                suppressHydrationWarning
               >
                 <a
                   className="badge-base__link LI-simple-link"
@@ -218,6 +228,7 @@ export default function Home() {
                 data-type="HORIZONTAL"
                 data-vanity="luisbrose"
                 data-version="v1"
+                suppressHydrationWarning
               >
                 <a
                   className="badge-base__link LI-simple-link"
