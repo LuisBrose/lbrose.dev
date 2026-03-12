@@ -16,6 +16,15 @@ export function useLinkedinBadge() {
         iframe.setAttribute("scrolling", "no")
         iframe.style.overflow = "hidden"
 
+        // Auto-size iframe height to its content (only on initial load)
+        const body = doc.body || doc.documentElement
+        if (body) {
+          const contentHeight = body.scrollHeight
+          if (contentHeight > 0) {
+            iframe.style.height = `${contentHeight}px`
+          }
+        }
+
         const head = doc.head || doc.getElementsByTagName("head")[0]
         if (head && !head.querySelector('base[data-linkedin-badge-base="true"]')) {
           const base = doc.createElement("base")
@@ -34,10 +43,11 @@ export function useLinkedinBadge() {
         patchLinks()
 
         if (!iframeObservers.has(iframe)) {
-          const body = doc.body || doc.documentElement
           if (!body) return
 
-          const observer = new MutationObserver(patchLinks)
+          const observer = new MutationObserver(() => {
+            patchLinks()
+          })
           observer.observe(body, {
             childList: true,
             subtree: true,

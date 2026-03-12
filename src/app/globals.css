@@ -131,34 +131,42 @@
 
 .github-card {
   @apply rounded-lg overflow-hidden border border-border;
+  width: 495px;
 }
 
 .github-card img {
   @apply block w-full;
 }
 
-.linkedin-badge-dark {
-  @apply hidden;
+/* Hide/show LinkedIn badge fallback based on theme */
+.linkedin-badge-light {
+  display: block !important;
 }
 
-.dark .linkedin-badge-dark {
-  @apply block;
+.linkedin-badge-dark {
+  display: none !important;
 }
 
 .dark .linkedin-badge-light {
-  @apply hidden;
+  display: none !important;
+}
+
+.dark .linkedin-badge-dark {
+  display: block !important;
 }
 
 .linkedin-badge-wrapper {
   position: relative;
-  width: 329px;
-  height: 257px;
-  overflow: hidden;
-  overflow-x: hidden;
-  overflow-y: hidden;
+  width: 330px;
+  height: 277px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--background);
+  overflow: clip;
+}
+
+.linkedin-badge-wrapper .LI-simple-link {
+  display: none;
 }
 
 .linkedin-badge-wrapper::-webkit-scrollbar {
@@ -166,16 +174,260 @@
 }
 
 .linkedin-badge-wrapper iframe {
-  position: absolute;
-  top: 0;
-  left: -1px;
-  width: 330px !important;
-  height: 257px !important;
-  min-width: 330px !important;
-  max-width: 330px !important;
+  display: block;
+  width: 332px !important;
+  margin-left: -1px;
   border: none !important;
-  overflow: hidden !important;
-  pointer-events: auto;
+}
+
+/* LinkedIn profile badge fallback — styles from badges.linkedin.com */
+.profile-badge {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    0px -1px 1px rgba(0, 0, 0, 0.08),
+    1px 0px 1px rgba(0, 0, 0, 0.08),
+    -1px 0px 1px rgba(0, 0, 0, 0.08),
+    0px 1px 1px rgba(0, 0, 0, 0.08);
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell,
+    "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.profile-badge--width-330 {
+  width: 330px;
+}
+
+.profile-badge--light {
+  background-color: #fff;
+  color: #000;
+}
+
+.profile-badge--dark {
+  background-color: #000;
+  color: #fff;
+}
+
+.profile-badge__header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  height: 45px;
+  box-sizing: border-box;
+}
+
+.profile-badge__header--light {
+  background-color: #e9e5df;
+}
+
+.profile-badge__header--dark {
+  background-color: #38434f;
+}
+
+.profile-badge__header-logo-icon {
+  width: 84px;
+  height: 21px;
+  display: inline-block;
+}
+
+.profile-badge__header-logo-icon--light {
+  color: #0a66c2;
+}
+
+.profile-badge__header-logo-icon--dark {
+  color: #fff;
+}
+
+.profile-badge__content {
+  padding: 0 16px;
+}
+
+.profile-badge__content-profile-image {
+  margin: 12px 0 8px;
+}
+
+.artdeco-entity-image--circle-4 {
+  width: 56px;
+  height: 56px;
+  box-sizing: border-box;
+  background-clip: content-box;
+  border: 2px solid rgba(0, 0, 0, 0);
+  border-radius: 49.9%;
+}
+
+.profile-badge__content-profile-name {
+  padding: 0 0 4px;
+  margin: 0;
+  color: inherit;
+}
+
+.profile-badge__content-profile-name-link {
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: none;
+}
+
+.profile-badge__content-profile-name-link--dark:focus,
+.profile-badge__content-profile-name-link--dark:hover,
+.profile-badge__content-profile-name-link--dark:active,
+.profile-badge__content-profile-name-link--dark:visited {
+  color: #fff !important;
+  text-decoration: underline !important;
+}
+
+.profile-badge__content-profile-name-link--light:focus,
+.profile-badge__content-profile-name-link--light:hover,
+.profile-badge__content-profile-name-link--light:active,
+.profile-badge__content-profile-name-link--light:visited {
+  color: #000 !important;
+  text-decoration: underline !important;
+}
+
+.profile-badge__content-profile-headline {
+  padding: 0 0 4px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.42857;
+  font-weight: 400;
+  color: inherit;
+}
+
+.profile-badge__content-profile-company-school-info {
+  padding: 0 0 4px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: inherit;
+}
+
+.profile-badge__content-profile-company-school-info-link {
+  font-size: 12px;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: inherit;
+  text-decoration: none;
+}
+
+.profile-badge__content-profile-company-school-info-link--dark:focus,
+.profile-badge__content-profile-company-school-info-link--dark:hover,
+.profile-badge__content-profile-company-school-info-link--dark:active,
+.profile-badge__content-profile-company-school-info-link--dark:visited {
+  color: #fff !important;
+  text-decoration: underline !important;
+}
+
+.profile-badge__content-profile-company-school-info-link--light:focus,
+.profile-badge__content-profile-company-school-info-link--light:hover,
+.profile-badge__content-profile-company-school-info-link--light:active,
+.profile-badge__content-profile-company-school-info-link--light:visited {
+  color: #000 !important;
+  text-decoration: underline !important;
+}
+
+.profile-badge__cta-btn {
+  margin: 4px 16px 12px;
+  color: inherit;
+  align-self: flex-start;
+}
+
+.profile-badge__cta-btn--light {
+  background-color: transparent;
+  border: 0;
+  box-sizing: border-box;
+  color: #0a66c2;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  height: 32px;
+  line-height: 32px;
+  overflow: hidden;
+  outline-width: 2px;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition-duration: 167ms;
+  transition-property: background-color, box-shadow, color;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  vertical-align: middle;
+  z-index: 0;
+  border-radius: 24px;
+  box-shadow: inset 0 0 0 1px #0a66c2;
+}
+
+.profile-badge__cta-btn--light:focus,
+.profile-badge__cta-btn--light:hover {
+  background-color: rgba(112, 181, 249, 0.15) !important;
+  color: #0a66c2;
+  box-shadow: inset 0 0 0 2px #0a66c2;
+  text-decoration: none !important;
+}
+
+.profile-badge__cta-btn--light:active {
+  background-color: rgba(112, 181, 249, 0.3);
+  color: #004182;
+  box-shadow: inset 0 0 0 1px #004182;
+}
+
+.profile-badge__cta-btn--light:visited {
+  color: #0a66c2;
+}
+
+.profile-badge__cta-btn--dark {
+  background-color: transparent;
+  border: 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  height: 32px;
+  line-height: 32px;
+  overflow: hidden;
+  outline-width: 2px;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition-duration: 167ms;
+  transition-property: background-color, box-shadow, color;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  vertical-align: middle;
+  z-index: 0;
+  border-radius: 24px;
+  box-shadow: inset 0 0 0 1px #fff;
+}
+
+.profile-badge__cta-btn--dark:focus,
+.profile-badge__cta-btn--dark:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #fff;
+  box-shadow: inset 0 0 0 2px #fff;
+  text-decoration: none !important;
+}
+
+.profile-badge__cta-btn--dark:active {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.profile-badge__cta-btn--dark:visited {
+  color: #fff;
 }
 
 .card-glow {

@@ -1,11 +1,13 @@
 "use client"
 
+import { useState, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ExternalLink } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { GlowCard } from "@/components/glow-card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface ProductCardProps {
   title: string
@@ -17,6 +19,26 @@ interface ProductCardProps {
   secondaryLabel?: string
   images?: { src: string; alt: string }[]
   isBuiltByMe?: boolean
+}
+
+function CarouselImage({ src, alt }: { src: string; alt: string }) {
+  const [loaded, setLoaded] = useState(false)
+
+  const onLoad = useCallback(() => setLoaded(true), [])
+
+  return (
+    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-t-xl">
+      {!loaded && <Skeleton className="absolute inset-0 rounded-none" />}
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(min-width: 768px) 384px, 100vw"
+        className={`object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+        onLoad={onLoad}
+      />
+    </div>
+  )
 }
 
 export function ProductCard({
@@ -39,15 +61,7 @@ export function ProductCard({
               <CarouselContent>
                 {images.map((image) => (
                   <CarouselItem key={image.src}>
-                    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-t-xl">
-                      <Image
-                        src={image.src}
-                        alt={image.alt}
-                        fill
-                        sizes="(min-width: 768px) 384px, 100vw"
-                        className="object-cover"
-                      />
-                    </div>
+                    <CarouselImage src={image.src} alt={image.alt} />
                   </CarouselItem>
                 ))}
               </CarouselContent>

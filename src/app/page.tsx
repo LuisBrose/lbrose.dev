@@ -137,16 +137,18 @@ export default function Home() {
                   </div>
                 </a>
               ) : (
-                <a href="https://github.com/LuisBrose" target="_blank" rel="noopener noreferrer" className="relative block">
-                  {!githubStreakLoaded && <Skeleton className="absolute inset-0 rounded-none" />}
-                  <img
-                    ref={(el) => { if (el?.complete && el.naturalWidth > 0) setGithubStreakLoaded(true) }}
-                    src={mounted && isDark ? "/gh-streak-dark.svg" : "/gh-streak.svg"}
-                    alt="GitHub contribution streak for LuisBrose"
-                    onLoad={() => setGithubStreakLoaded(true)}
-                    onError={() => setGithubStreakFailed(true)}
-                    className={githubStreakLoaded ? "opacity-100" : "opacity-0"}
-                  />
+                <a href="https://github.com/LuisBrose" target="_blank" rel="noopener noreferrer" className="relative block" style={{ aspectRatio: "495/195" }}>
+                  {(!mounted || !githubStreakLoaded) && <Skeleton className="absolute inset-0 rounded-none" />}
+                  {mounted && (
+                    <img
+                      ref={(el) => { if (el?.complete && el.naturalWidth > 0) setGithubStreakLoaded(true) }}
+                      src={isDark ? "/gh-streak-dark.svg" : "/gh-streak.svg"}
+                      alt="GitHub contribution streak for LuisBrose"
+                      onLoad={() => setGithubStreakLoaded(true)}
+                      onError={() => setGithubStreakFailed(true)}
+                      className={githubStreakLoaded ? "opacity-100" : "opacity-0"}
+                    />
+                  )}
                 </a>
               )}
               <div className="mt-2">
@@ -161,16 +163,18 @@ export default function Home() {
                     <span>Top languages</span>
                   </a>
                 ) : (
-                  <div className="relative">
-                    {!githubLangsLoaded && <Skeleton className="absolute inset-0 rounded-none" />}
-                    <img
-                      ref={(el) => { if (el?.complete && el.naturalWidth > 0) setGithubLangsLoaded(true) }}
-                      src={mounted && isDark ? "/gh-langs-dark.svg" : "/gh-langs.svg"}
-                      alt="Top languages for LuisBrose"
-                      onLoad={() => setGithubLangsLoaded(true)}
-                      onError={() => setGithubLangsFailed(true)}
-                      className={githubLangsLoaded ? "opacity-100" : "opacity-0"}
-                    />
+                  <div className="relative" style={{ aspectRatio: "300/165" }}>
+                    {(!mounted || !githubLangsLoaded) && <Skeleton className="absolute inset-0 rounded-none" />}
+                    {mounted && (
+                      <img
+                        ref={(el) => { if (el?.complete && el.naturalWidth > 0) setGithubLangsLoaded(true) }}
+                        src={isDark ? "/gh-langs-dark.svg" : "/gh-langs.svg"}
+                        alt="Top languages for LuisBrose"
+                        onLoad={() => setGithubLangsLoaded(true)}
+                        onError={() => setGithubLangsFailed(true)}
+                        className={githubLangsLoaded ? "opacity-100" : "opacity-0"}
+                      />
+                    )}
                   </div>
                 )}
               </div>
@@ -183,7 +187,10 @@ export default function Home() {
                 <LinkedinBadgeSkeleton />
               ) : null}
               {showLinkedinFallback ? (
-                <LinkedinBadgeFallback />
+                <>
+                  <LinkedinBadgeFallback theme="light" className="linkedin-badge-light" />
+                  <LinkedinBadgeFallback theme="dark" className="linkedin-badge-dark" />
+                </>
               ) : null}
               <div
                 className="badge-base LI-profile-badge linkedin-badge-light"
