@@ -200,19 +200,19 @@ export default function Home() {
                   </div>
                 </a>
               ) : (
-                <div className="relative" style={{ height: 195 }}>
+                <div className="relative w-full" style={{ aspectRatio: "464/183" }}>
                   <Skeleton className="absolute inset-0 rounded-none" />
                   {mounted && (
                     <img
                       src={`${isDark ? "/gh-streak-dark.svg" : "/gh-streak.svg"}?t=${themeCounter}`}
                       alt="GitHub contribution streak for LuisBrose"
-                      className="absolute inset-0 w-full h-full object-cover z-10"
+                      className="absolute inset-0 w-full h-full object-contain z-10"
                       suppressHydrationWarning
                     />
                   )}
                 </div>
               )}
-              <div className="mt-2">
+              <div>
                 {githubLangsFailed ? (
                   <a
                     href="https://github.com/LuisBrose?tab=repositories"
@@ -224,7 +224,7 @@ export default function Home() {
                     <span>Top languages</span>
                   </a>
                 ) : (
-                  <div className="relative" style={{ height: 165 }}>
+                  <div className="relative w-full" style={{ aspectRatio: "464/255" }}>
                     <Skeleton className="absolute inset-0 rounded-none" />
                     {mounted && (
                       <img

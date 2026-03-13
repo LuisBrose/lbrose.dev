@@ -144,12 +144,12 @@
 }
 
 ::view-transition-new(root) {
-  z-index: 999;
+  z-index: 50;
   animation: reveal-theme 0.5s ease-in-out;
 }
 
 .dark::view-transition-new(root) {
-  z-index: 999;
+  z-index: 50;
   animation: reveal-theme 0.5s ease-in-out;
 }
 
@@ -164,10 +164,6 @@
 
 .github-card {
   @apply rounded-lg overflow-hidden border border-border w-full;
-}
-
-.github-card img {
-  @apply block w-full h-auto;
 }
 
 /* Hide/show LinkedIn badge fallback based on theme */
