@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef, useLayoutEffect } from "react"
+import { useEffect, useState, useRef, useLayoutEffect, useCallback } from "react"
 import { useTheme } from "next-themes"
 import { GithubIcon, LinkedinIcon, CopyIcon, CheckIcon, AtSignIcon } from "lucide-animated"
 import { ProductCard } from "@/components/product-card"
@@ -60,8 +60,10 @@ export default function Home() {
   const [githubLangsLoaded, setGithubLangsLoaded] = useState(false)
   const [mounted, setMounted] = useState(false)
   const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === "dark"
+  const [visualTheme, setVisualTheme] = useState<"light" | "dark" | undefined>(undefined)
+  const isDark = visualTheme === "dark" || (visualTheme === undefined && resolvedTheme === "dark")
   const prevTheme = useRef(resolvedTheme)
+  const skipNextThemeUpdate = useRef(false)
   const [themeCounter, setThemeCounter] = useState(0)
   const { isLoading: isLinkedinBadgeLoading, showFallback: showLinkedinFallback } = useLinkedinBadge()
   const email = "contact@lbrose.dev"
@@ -76,12 +78,31 @@ export default function Home() {
     setMounted(true)
   }, [])
 
+  const handleThemeTransition = useCallback((e: CustomEvent<{ theme: string }>) => {
+    setVisualTheme(e.detail.theme as "light" | "dark")
+    setThemeCounter((c) => c + 1)
+    skipNextThemeUpdate.current = true
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener("theme-transition", handleThemeTransition as EventListener)
+    return () => {
+      window.removeEventListener("theme-transition", handleThemeTransition as EventListener)
+    }
+  }, [handleThemeTransition])
+
   useLayoutEffect(() => {
+    if (skipNextThemeUpdate.current) {
+      skipNextThemeUpdate.current = false
+      prevTheme.current = resolvedTheme
+      return
+    }
     if (mounted && resolvedTheme !== prevTheme.current) {
       prevTheme.current = resolvedTheme
       setGithubStreakLoaded(false)
       setGithubLangsLoaded(false)
       setThemeCounter((c) => c + 1)
+      setVisualTheme(resolvedTheme as "light" | "dark")
     }
   }, [resolvedTheme, mounted])
 
@@ -90,7 +111,6 @@ export default function Home() {
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
-
 
   return (
     <div className="min-h-screen">
@@ -179,7 +199,7 @@ export default function Home() {
                     <p className="text-xs text-muted-foreground">github.com/LuisBrose</p>
                   </div>
                 </a>
-) : (
+              ) : (
                 <div className="relative" style={{ height: 195 }}>
                   <Skeleton className="absolute inset-0 rounded-none" />
                   {mounted && (

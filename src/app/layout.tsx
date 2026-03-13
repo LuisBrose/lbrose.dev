@@ -41,7 +41,6 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
         >
           <div className="min-h-screen flex flex-col">
             <Navbar />
