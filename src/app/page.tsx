@@ -135,7 +135,7 @@ export default function Home() {
           </div>
         </div>
         <div className="relative z-10 flex flex-col min-h-[calc(100vh-14rem)] pointer-events-none items-center">
-          <div className="h-[300px] pointer-events-none" />
+          <div className="h-[250px] md:h-[200px] pointer-events-none" />
           <div className="pointer-events-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Luis Brose</h1>
             <p className="mt-2 text-lg text-muted-foreground">Software Developer</p>
@@ -148,11 +148,11 @@ export default function Home() {
                   href="https://www.linkedin.com/in/luisbrose/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+                  className="inline-flex items-center justify-center h-9 md:h-10 px-4 md:px-5 text-sm md:text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
                   onMouseEnter={() => linkedinIconRef.current?.startAnimation()}
                   onMouseLeave={() => linkedinIconRef.current?.stopAnimation()}
                 >
-                  <LinkedinIcon ref={linkedinIconRef} size={20} className="mr-2" />
+                  <LinkedinIcon ref={linkedinIconRef} size={18} className="mr-1.5 md:mr-2 md:size-5" />
                   LinkedIn
                 </a>
                 <a href="#about" onClick={handleAnchorClick("#about")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group">
@@ -165,11 +165,11 @@ export default function Home() {
                   href="https://github.com/LuisBrose"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+                  className="inline-flex items-center justify-center h-9 md:h-10 px-4 md:px-5 text-sm md:text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
                   onMouseEnter={() => githubIconRef.current?.startAnimation()}
                   onMouseLeave={() => githubIconRef.current?.stopAnimation()}
                 >
-                  <GithubIcon ref={githubIconRef} size={20} className="mr-2" />
+                  <GithubIcon ref={githubIconRef} size={18} className="mr-1.5 md:mr-2 md:size-5" />
                   GitHub
                 </a>
                 <a href="#about" onClick={handleAnchorClick("#about")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group">
@@ -180,24 +180,24 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center items-center gap-3 mb-6 pointer-events-auto">
-            <span className="text-muted-foreground">{email}</span>
+          <div className="flex flex-nowrap justify-center items-center gap-2 md:gap-3 mb-6 pointer-events-auto">
+            <span className="text-sm md:text-base text-muted-foreground shrink-0">{email}</span>
             <a
               href={`mailto:${email}`}
-              className="inline-flex items-center justify-center h-8 px-3 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+              className="inline-flex items-center justify-center h-8 px-2.5 md:px-3 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors shrink-0"
               onMouseEnter={() => emailIconRef.current?.startAnimation()}
               onMouseLeave={() => emailIconRef.current?.stopAnimation()}
             >
               <AtSignIcon ref={emailIconRef} size={16} className="mr-1" />
-              Email
+              Mail
             </a>
             <button
               onClick={copyEmail}
-              className="inline-flex items-center justify-center h-8 px-3 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+              className="inline-flex items-center justify-center h-8 px-2.5 md:px-3 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors shrink-0"
               onMouseEnter={() => copyIconRef.current?.startAnimation()}
               onMouseLeave={() => copyIconRef.current?.stopAnimation()}
             >
-              <CopyIcon ref={copyIconRef} size={16} className="mr-1.5" />
+              <CopyIcon ref={copyIconRef} size={16} className="mr-1" />
               Copy
             </button>
           </div>
