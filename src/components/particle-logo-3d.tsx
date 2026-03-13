@@ -95,6 +95,8 @@ export function ParticleLogo3d({
   const isDraggingRef = useRef(false)
   const lastMouseRef = useRef({ x: 0, y: 0 })
   const lastDragTimeRef = useRef(0)
+  const gyroRotationRef = useRef({ x: 0, y: 0 })
+  const gyroEnabledRef = useRef(false)
 
   const containerWidth = 400
   const containerHeight = 400
@@ -206,6 +208,14 @@ export function ParticleLogo3d({
 
       if (!isDraggingRef.current) {
         targetRotationRef.current.x += actualSpeed * deltaFactor
+        if (gyroEnabledRef.current) {
+          targetRotationRef.current.x += gyroRotationRef.current.x * 0.02 * deltaFactor
+          targetRotationRef.current.y += gyroRotationRef.current.y * 0.02 * deltaFactor
+          targetRotationRef.current.y = Math.max(
+            -Math.PI / 2,
+            Math.min(Math.PI / 2, targetRotationRef.current.y)
+          )
+        }
       }
 
       if (!isDraggingRef.current && lerpFactor > 0) {
@@ -551,6 +561,31 @@ export function ParticleLogo3d({
 
     window.addEventListener("resize", handleResize)
 
+    const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
+      if (event.gamma !== null && event.beta !== null) {
+        gyroEnabledRef.current = true
+        gyroRotationRef.current.x = event.gamma * (Math.PI / 180)
+        gyroRotationRef.current.y = event.beta * (Math.PI / 180) * 0.5
+      }
+    }
+
+    const requestGyroPermission = async () => {
+      if (typeof (DeviceOrientationEvent as any).requestPermission === "function") {
+        try {
+          const permission = await (DeviceOrientationEvent as any).requestPermission()
+          if (permission === "granted") {
+            window.addEventListener("deviceorientation", handleDeviceOrientation)
+          }
+        } catch {
+          // Permission denied
+        }
+      } else {
+        window.addEventListener("deviceorientation", handleDeviceOrientation)
+      }
+    }
+
+    requestGyroPermission()
+
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
@@ -564,6 +599,7 @@ export function ParticleLogo3d({
       canvas.removeEventListener("touchend", handleTouchEnd)
       canvas.removeEventListener("touchcancel", handleTouchEnd)
       window.removeEventListener("resize", handleResize)
+      window.removeEventListener("deviceorientation", handleDeviceOrientation)
 
       if (rendererRef.current) {
         rendererRef.current.dispose()

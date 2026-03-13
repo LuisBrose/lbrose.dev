@@ -127,15 +127,15 @@ export default function Home() {
     <div className="min-h-screen">
       <section
         id="home"
-        className="container mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[calc(100vh-3.5rem)] scroll-mt-20 relative"
+        className="container mx-auto px-4 py-8 md:py-16 flex flex-col items-center scroll-mt-20 relative"
       >
         <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none">
           <div className="pointer-events-auto">
             <ParticleLogo3d color={isDark ? "#a1a1aa" : "#1a1a1a"} />
           </div>
         </div>
-        <div className="relative z-10 flex flex-col min-h-[calc(100vh-14rem)] pointer-events-none items-center">
-          <div className="h-[250px] md:h-[200px] pointer-events-none" />
+        <div className="relative z-10 flex flex-col pointer-events-none items-center min-h-[calc(100vh-10rem)]">
+          <div className="h-[300px] md:h-[350px] pointer-events-none" />
           <div className="pointer-events-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Luis Brose</h1>
             <p className="mt-2 text-lg text-muted-foreground">Software Developer</p>
@@ -180,7 +180,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-nowrap justify-center items-center gap-2 md:gap-3 mb-6 pointer-events-auto">
+          <div className="flex flex-nowrap justify-center items-center gap-2 md:gap-3 pointer-events-auto">
             <span className="text-sm md:text-base text-muted-foreground shrink-0">{email}</span>
             <a
               href={`mailto:${email}`}
