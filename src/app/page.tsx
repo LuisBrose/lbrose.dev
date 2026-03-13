@@ -2,7 +2,9 @@
 
 import { useEffect, useState, useRef, useLayoutEffect, useCallback } from "react"
 import { useTheme } from "next-themes"
-import { GithubIcon, LinkedinIcon, CopyIcon, CheckIcon, AtSignIcon } from "lucide-animated"
+import { GithubIcon, LinkedinIcon, CopyIcon, AtSignIcon } from "lucide-animated"
+import { ChevronDown } from "lucide-react"
+import { toast } from "sonner"
 import { ProductCard } from "@/components/product-card"
 import { LinkedinBadgeSkeleton } from "@/components/linkedin-badge-skeleton"
 import { LinkedinBadgeFallback } from "@/components/linkedin-badge-fallback"
@@ -53,7 +55,6 @@ const products = [
 ]
 
 export default function Home() {
-  const [copied, setCopied] = useState(false)
   const [githubStreakFailed, setGithubStreakFailed] = useState(false)
   const [githubLangsFailed, setGithubLangsFailed] = useState(false)
   const [githubStreakLoaded, setGithubStreakLoaded] = useState(false)
@@ -72,7 +73,6 @@ export default function Home() {
   const githubIconRef = useRef<React.ComponentRef<typeof GithubIcon>>(null)
   const emailIconRef = useRef<React.ComponentRef<typeof AtSignIcon>>(null)
   const copyIconRef = useRef<React.ComponentRef<typeof CopyIcon>>(null)
-  const checkIconRef = useRef<React.ComponentRef<typeof CheckIcon>>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -108,8 +108,19 @@ export default function Home() {
 
   const copyEmail = async () => {
     await navigator.clipboard.writeText(email)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    toast.success("Email copied to clipboard")
+  }
+
+  const handleAnchorClick = (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!href.startsWith("#")) return
+    event.preventDefault()
+    const id = href.slice(1)
+    const el = document.getElementById(id)
+    if (!el) return
+    el.scrollIntoView({ behavior: "smooth", block: "start" })
+    if (window.history?.replaceState) {
+      window.history.replaceState(null, "", href)
+    }
   }
 
   return (
@@ -123,58 +134,73 @@ export default function Home() {
             <ParticleLogo3d color={isDark ? "#a1a1aa" : "#1a1a1a"} />
           </div>
         </div>
-        <div className="relative z-10 flex flex-col items-center mt-69">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Luis Brose</h1>
-          <p className="mt-2 text-lg text-muted-foreground">Software Developer</p>
+        <div className="relative z-10 flex flex-col min-h-[calc(100vh-14rem)] pointer-events-none items-center">
+          <div className="h-[300px] pointer-events-none" />
+          <div className="pointer-events-auto text-center">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Luis Brose</h1>
+            <p className="mt-2 text-lg text-muted-foreground">Software Developer</p>
+          </div>
           
-        <div className="flex flex-wrap justify-center gap-4 mt-8">
-          <a
-            href="https://www.linkedin.com/in/luisbrose/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors"
-            onMouseEnter={() => linkedinIconRef.current?.startAnimation()}
-            onMouseLeave={() => linkedinIconRef.current?.stopAnimation()}
-          >
-            <LinkedinIcon ref={linkedinIconRef} size={20} className="mr-2" />
-            LinkedIn
-          </a>
-          <a
-            href="https://github.com/LuisBrose"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
-            onMouseEnter={() => githubIconRef.current?.startAnimation()}
-            onMouseLeave={() => githubIconRef.current?.stopAnimation()}
-          >
-            <GithubIcon ref={githubIconRef} size={20} className="mr-2" />
-            GitHub
-          </a>
-          <a
-            href={`mailto:${email}`}
-            className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
-            onMouseEnter={() => emailIconRef.current?.startAnimation()}
-            onMouseLeave={() => emailIconRef.current?.stopAnimation()}
-          >
-            <AtSignIcon ref={emailIconRef} size={20} className="mr-2" />
-            Email
-          </a>
-          <button
-            onClick={copyEmail}
-            className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
-            onMouseEnter={() => {
-              if (copied) checkIconRef.current?.startAnimation()
-              else copyIconRef.current?.startAnimation()
-            }}
-            onMouseLeave={() => {
-              checkIconRef.current?.stopAnimation()
-              copyIconRef.current?.stopAnimation()
-            }}
-          >
-            {copied ? <CheckIcon ref={checkIconRef} size={20} className="mr-2" /> : <CopyIcon ref={copyIconRef} size={20} className="mr-2" />}
-            {copied ? "Copied" : "Copy Email"}
-          </button>
-        </div>
+          <div className="flex-1 flex flex-col items-center justify-center pointer-events-auto">
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex items-center gap-2">
+                <a
+                  href="https://www.linkedin.com/in/luisbrose/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+                  onMouseEnter={() => linkedinIconRef.current?.startAnimation()}
+                  onMouseLeave={() => linkedinIconRef.current?.stopAnimation()}
+                >
+                  <LinkedinIcon ref={linkedinIconRef} size={20} className="mr-2" />
+                  LinkedIn
+                </a>
+                <a href="#about" onClick={handleAnchorClick("#about")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group">
+                  <span>More</span>
+                  <ChevronDown className="size-4 animate-bounce" />
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href="https://github.com/LuisBrose"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center h-10 px-5 text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+                  onMouseEnter={() => githubIconRef.current?.startAnimation()}
+                  onMouseLeave={() => githubIconRef.current?.stopAnimation()}
+                >
+                  <GithubIcon ref={githubIconRef} size={20} className="mr-2" />
+                  GitHub
+                </a>
+                <a href="#about" onClick={handleAnchorClick("#about")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group">
+                  <span>More</span>
+                  <ChevronDown className="size-4 animate-bounce" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap justify-center items-center gap-3 mb-6 pointer-events-auto">
+            <span className="text-muted-foreground">{email}</span>
+            <a
+              href={`mailto:${email}`}
+              className="inline-flex items-center justify-center h-8 px-3 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+              onMouseEnter={() => emailIconRef.current?.startAnimation()}
+              onMouseLeave={() => emailIconRef.current?.stopAnimation()}
+            >
+              <AtSignIcon ref={emailIconRef} size={16} className="mr-1" />
+              Email
+            </a>
+            <button
+              onClick={copyEmail}
+              className="inline-flex items-center justify-center h-8 px-3 text-sm font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+              onMouseEnter={() => copyIconRef.current?.startAnimation()}
+              onMouseLeave={() => copyIconRef.current?.stopAnimation()}
+            >
+              <CopyIcon ref={copyIconRef} size={16} className="mr-1.5" />
+              Copy
+            </button>
+          </div>
         </div>
       </section>
 
