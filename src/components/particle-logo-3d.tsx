@@ -557,9 +557,23 @@ export function ParticleLogo3d({
       mouseRef.current = null
     }
 
+    const handleTouchStart = (event: TouchEvent) => {
+      const containerRect = container.getBoundingClientRect()
+      const touch = event.touches[0]
+      if (touch) {
+        const touchXInContainer = touch.clientX - containerRect.left
+        const touchYInContainer = touch.clientY - containerRect.top
+        mouseRef.current = {
+          x: touchXInContainer + offsetX,
+          y: touchYInContainer + offsetY,
+        }
+      }
+    }
+
+    canvas.addEventListener("touchstart", handleTouchStart)
     canvas.addEventListener("touchmove", handleTouchMove, { passive: false })
-    canvas.addEventListener("touchend", handleTouchEnd)
-    canvas.addEventListener("touchcancel", handleTouchEnd)
+    window.addEventListener("touchend", handleTouchEnd)
+    window.addEventListener("touchcancel", handleTouchEnd)
 
     const handleResize = () => {
       if (rendererRef.current) {
@@ -578,9 +592,13 @@ export function ParticleLogo3d({
         const deltaBeta = event.beta - lastGyroRef.current.beta
         
         // Apply gyro movement as temporary influence
-        const sensitivity = 0.015
-        gyroInfluenceRef.current.x += deltaGamma * sensitivity
-        gyroInfluenceRef.current.y += deltaBeta * sensitivity * 0.5
+        const sensitivity = 0.002
+        const threshold = 0.3
+        
+        if (Math.abs(deltaGamma) > threshold || Math.abs(deltaBeta) > threshold) {
+          gyroInfluenceRef.current.x += deltaGamma * sensitivity
+          gyroInfluenceRef.current.y += deltaBeta * sensitivity * 0.5
+        }
         
         // Clamp y influence
         const maxYInfluence = Math.PI / 4
