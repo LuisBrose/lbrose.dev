@@ -91,11 +91,13 @@ export function ParticleLogo3d({
 
   const rotationRef = useRef({ x: 0, y: 0 })
   const targetRotationRef = useRef({ x: 0, y: 0 })
+  const gyroTargetRef = useRef({ x: 0, y: 0 })
+  const gyroInfluenceRef = useRef({ x: 0, y: 0 })
   const velocityRef = useRef({ x: 0, y: 0 })
   const isDraggingRef = useRef(false)
   const lastMouseRef = useRef({ x: 0, y: 0 })
   const lastDragTimeRef = useRef(0)
-  const gyroRotationRef = useRef({ x: 0, y: 0 })
+  const lastGyroRef = useRef({ gamma: 0, beta: 0 })
   const gyroEnabledRef = useRef(false)
 
   const containerWidth = 400
@@ -208,14 +210,20 @@ export function ParticleLogo3d({
 
       if (!isDraggingRef.current) {
         targetRotationRef.current.x += actualSpeed * deltaFactor
-        if (gyroEnabledRef.current) {
-          targetRotationRef.current.x += gyroRotationRef.current.x * 0.02 * deltaFactor
-          targetRotationRef.current.y += gyroRotationRef.current.y * 0.02 * deltaFactor
-          targetRotationRef.current.y = Math.max(
-            -Math.PI / 2,
-            Math.min(Math.PI / 2, targetRotationRef.current.y)
-          )
-        }
+        
+        // Apply gyro influence with decay
+        const gyroDecay = 0.98
+        gyroInfluenceRef.current.x *= gyroDecay
+        gyroInfluenceRef.current.y *= gyroDecay
+        
+        // Blend gyro influence into target
+        targetRotationRef.current.x += gyroInfluenceRef.current.x * deltaFactor
+        targetRotationRef.current.y += gyroInfluenceRef.current.y * deltaFactor
+        
+        // Gravity: pull pitch (y) back to upright, not yaw (x) which is the spin
+        const gravityStrength = 0.01
+        const pullY = (0 - targetRotationRef.current.y) * gravityStrength * deltaFactor
+        targetRotationRef.current.y += pullY
       }
 
       if (!isDraggingRef.current && lerpFactor > 0) {
@@ -564,8 +572,24 @@ export function ParticleLogo3d({
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       if (event.gamma !== null && event.beta !== null) {
         gyroEnabledRef.current = true
-        gyroRotationRef.current.x = event.gamma * (Math.PI / 180)
-        gyroRotationRef.current.y = event.beta * (Math.PI / 180) * 0.5
+        
+        // Calculate delta from last gyro reading
+        const deltaGamma = event.gamma - lastGyroRef.current.gamma
+        const deltaBeta = event.beta - lastGyroRef.current.beta
+        
+        // Apply gyro movement as temporary influence
+        const sensitivity = 0.015
+        gyroInfluenceRef.current.x += deltaGamma * sensitivity
+        gyroInfluenceRef.current.y += deltaBeta * sensitivity * 0.5
+        
+        // Clamp y influence
+        const maxYInfluence = Math.PI / 4
+        gyroInfluenceRef.current.y = Math.max(
+          -maxYInfluence,
+          Math.min(maxYInfluence, gyroInfluenceRef.current.y)
+        )
+        
+        lastGyroRef.current = { gamma: event.gamma, beta: event.beta }
       }
     }
 

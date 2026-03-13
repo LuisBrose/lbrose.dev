@@ -39,8 +39,9 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-[100] w-full border-b bg-background supports-[backdrop-filter]:bg-background/80 supports-[backdrop-filter]:backdrop-blur">
-      <div className="container flex h-14 items-center mx-auto px-4 max-w-4xl">
+    <>
+      <header className="fixed top-0 z-[100] w-full border-b bg-background supports-[backdrop-filter]:bg-background/80 supports-[backdrop-filter]:backdrop-blur">
+        <div className="container flex h-14 items-center mx-auto px-4 max-w-4xl">
         <Link
           href="#home"
           onClick={handleAnchorClick("#home")}
@@ -75,5 +76,7 @@ export function Navbar() {
         <ThemeToggle />
       </div>
     </header>
+      <div className="h-14" />
+    </>
   )
 }
