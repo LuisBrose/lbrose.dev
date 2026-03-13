@@ -133,6 +133,7 @@ export function ParticleLogo3d({
     canvas.style.width = `${canvasWidth}px`
     canvas.style.height = `${canvasHeight}px`
     canvas.style.display = "block"
+    canvas.style.touchAction = "pan-y"
     container.appendChild(canvas)
     rendererRef.current = renderer
 
@@ -542,6 +543,14 @@ export function ParticleLogo3d({
     canvas.addEventListener("touchend", handleTouchEnd)
     canvas.addEventListener("touchcancel", handleTouchEnd)
 
+    const handleResize = () => {
+      if (rendererRef.current) {
+        rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      }
+    }
+
+    window.addEventListener("resize", handleResize)
+
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
@@ -554,6 +563,7 @@ export function ParticleLogo3d({
       canvas.removeEventListener("touchmove", handleTouchMove)
       canvas.removeEventListener("touchend", handleTouchEnd)
       canvas.removeEventListener("touchcancel", handleTouchEnd)
+      window.removeEventListener("resize", handleResize)
 
       if (rendererRef.current) {
         rendererRef.current.dispose()
@@ -569,18 +579,18 @@ export function ParticleLogo3d({
     }
   }, [particleCount, particleSize, speed, color])
 
-  return (
+return (
     <div
       className={`w-[400px] h-[400px] relative ${className}`}
-      style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      style={{ display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}
     >
       <div
         ref={containerRef}
         style={{
-          width:400,
-          height:400,
+          width: 400,
+          height: 400,
           position: "relative",
-          overflow: "visible",
+          overflow: "hidden",
         }}
       />
     </div>
