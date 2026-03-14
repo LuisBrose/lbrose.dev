@@ -10,9 +10,32 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Luis Brose",
+  "jobTitle": "Full Stack Developer",
+  "description": "Full Stack Developer (M.Sc.) at Intero Technologies, an Odoo Gold Partner in Stralsund, Germany. Specializes in Odoo ERP and Python development with a focus on product design and user experience.",
+  "url": "https://lbrose.dev",
+  "sameAs": [
+    "https://github.com/LuisBrose",
+    "https://www.linkedin.com/in/luisbrose/"
+  ],
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Intero Technologies",
+    "alternateName": "Intero Technologies - Odoo Gold Partner"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Stralsund",
+    "addressCountry": "DE"
+  }
+}
+
 export const metadata: Metadata = {
-  title: "Luis Brose - Software Developer",
-  description: "Personal website of Luis Brose, Software Developer",
+  title: "Luis Brose - Full Stack Developer",
+  description: "Luis Brose - Full Stack Developer (M.Sc.) at Intero Technologies in Stralsund, Germany. Specializes in Odoo ERP and Python development. Passionate about product design and creating intuitive user experiences.",
   icons: {
     icon: [
       { url: "/icon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
@@ -33,6 +56,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="light dark" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <script async defer src="https://platform.linkedin.com/badges/js/profile.js" />
       </head>
       <body
