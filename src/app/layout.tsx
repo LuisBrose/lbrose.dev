@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -70,13 +71,15 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
         >
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-1">
-              {children}
-            </main>
-          </div>
-          <Toaster />
+          <TooltipProvider>
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <main className="flex-1">
+                {children}
+              </main>
+            </div>
+            <Toaster />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

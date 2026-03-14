@@ -11,6 +11,8 @@ import { LinkedinBadgeFallback } from "@/components/linkedin-badge-fallback"
 import { useLinkedinBadge } from "@/hooks/use-linkedin-badge"
 import { GlowCard } from "@/components/glow-card"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { ParticleLogo3d } from "@/components/particle-logo-3d"
 
 const products = [
@@ -207,113 +209,153 @@ export default function Home() {
       <section className="container mx-auto px-4 py-16 max-w-4xl">
         <div id="about" className="scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">About</h2>
-          <div className="flex flex-wrap items-start justify-center gap-6">
-          <GlowCard className="rounded-lg w-full max-w-[495px] mx-auto md:mx-0">
-            <div className="github-card">
-              {githubStreakFailed ? (
-                <a
-                  href="https://github.com/LuisBrose"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-4 py-3"
-                >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
-                    <GithubIcon size={20} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold truncate">LuisBrose</p>
-                    <p className="text-xs text-muted-foreground">github.com/LuisBrose</p>
-                  </div>
-                </a>
-              ) : (
-                <div className="relative w-full" style={{ aspectRatio: "464/183" }}>
-                  <Skeleton className="absolute inset-0 rounded-none" />
-                  {mounted && (
-                    <img
-                      src={`${isDark ? "/gh-streak-dark.svg" : "/gh-streak.svg"}?t=${themeCounter}`}
-                      alt="GitHub contribution streak for LuisBrose"
-                      className="absolute inset-0 w-full h-full object-contain z-10"
-                      suppressHydrationWarning
-                    />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <GlowCard className="rounded-lg">
+            <Card>
+              <div className="flex justify-center p-4 pt-5">
+                <div className="linkedin-badge-wrapper relative" style={{ width: 330 }}>
+                  {isLinkedinBadgeLoading && !showLinkedinFallback && <LinkedinBadgeSkeleton />}
+                  {showLinkedinFallback && (
+                    <>
+                      <LinkedinBadgeFallback theme="light" className="linkedin-badge-light" />
+                      <LinkedinBadgeFallback theme="dark" className="linkedin-badge-dark" />
+                    </>
                   )}
-                </div>
-              )}
-              <div>
-                {githubLangsFailed ? (
-                  <a
-                    href="https://github.com/LuisBrose?tab=repositories"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground"
+                  <div
+                    className="badge-base LI-profile-badge linkedin-badge-light"
+                    data-locale="de_DE"
+                    data-size="large"
+                    data-theme="light"
+                    data-type="HORIZONTAL"
+                    data-vanity="luisbrose"
+                    data-version="v1"
+                    suppressHydrationWarning
                   >
-                    <GithubIcon size={16} />
-                    <span>Top languages</span>
-                  </a>
-                ) : (
-                  <div className="relative w-full" style={{ aspectRatio: "464/255" }}>
-                    <Skeleton className="absolute inset-0 rounded-none" />
-                    {mounted && (
-                      <img
-                        src={`${isDark ? "/gh-langs-dark.svg" : "/gh-langs.svg"}?t=${themeCounter}`}
-                        alt="Top languages for LuisBrose"
-                        className="absolute inset-0 w-full h-full object-contain z-10"
-                        suppressHydrationWarning
-                      />
-                    )}
+                    <a
+                      className="badge-base__link LI-simple-link"
+                      href="https://de.linkedin.com/in/luisbrose?trk=profile-badge"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Luis Brose
+                    </a>
                   </div>
-                )}
+                  <div
+                    className="badge-base LI-profile-badge linkedin-badge-dark"
+                    data-locale="de_DE"
+                    data-size="large"
+                    data-theme="dark"
+                    data-type="HORIZONTAL"
+                    data-vanity="luisbrose"
+                    data-version="v1"
+                    suppressHydrationWarning
+                  >
+                    <a
+                      className="badge-base__link LI-simple-link"
+                      href="https://de.linkedin.com/in/luisbrose?trk=profile-badge"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Luis Brose
+                    </a>
+                  </div>
+                </div>
               </div>
-            </div>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  Developing Software @{" "}
+                  <a href="https://www.intero-technologies.de/" target="_blank" rel="noopener noreferrer" className="text-foreground hover:underline">
+                    Intero Technologies
+                  </a>
+                  {" "}for{" "}
+                  {(() => {
+                    const start = new Date(2023, 8, 1)
+                    const now = new Date()
+                    const diffMs = now.getTime() - start.getTime()
+                    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+                    const years = Math.floor(diffDays / 365)
+                    const days = diffDays % 365
+                    return (
+                      <span className="text-foreground font-medium">
+                        {years} years{days > 0 ? ` ${days} days` : ""}
+                      </span>
+                    )
+                  })()}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Based in Stralsund, Germany
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Interested in: Full Stack, Software Design/UX
+                </p>
+              </CardContent>
+            </Card>
           </GlowCard>
           
-          <GlowCard className="rounded-[10px] w-full max-w-[330px] mx-auto md:mx-0">
-            <div className="linkedin-badge-wrapper" style={{ minHeight: 277 }}>
-              {isLinkedinBadgeLoading && !showLinkedinFallback && <LinkedinBadgeSkeleton />}
-              {showLinkedinFallback && (
-                <>
-                  <LinkedinBadgeFallback theme="light" className="linkedin-badge-light" />
-                  <LinkedinBadgeFallback theme="dark" className="linkedin-badge-dark" />
-                </>
-              )}
-              <div
-                className="badge-base LI-profile-badge linkedin-badge-light"
-                data-locale="de_DE"
-                data-size="large"
-                data-theme="light"
-                data-type="HORIZONTAL"
-                data-vanity="luisbrose"
-                data-version="v1"
-                suppressHydrationWarning
+          <GlowCard className="rounded-lg">
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <a
+                    href="https://github.com/LuisBrose"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  />
+                }
               >
-                <a
-                  className="badge-base__link LI-simple-link"
-                  href="https://de.linkedin.com/in/luisbrose?trk=profile-badge"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Luis Brose
-                </a>
-              </div>
-              <div
-                className="badge-base LI-profile-badge linkedin-badge-dark"
-                data-locale="de_DE"
-                data-size="large"
-                data-theme="dark"
-                data-type="HORIZONTAL"
-                data-vanity="luisbrose"
-                data-version="v1"
-                suppressHydrationWarning
-              >
-                <a
-                  className="badge-base__link LI-simple-link"
-                  href="https://de.linkedin.com/in/luisbrose?trk=profile-badge"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Luis Brose
-                </a>
-              </div>
-            </div>
+                <Card className="p-0 gap-0">
+                  <div className="github-card">
+                    {githubStreakFailed ? (
+                      <div className="flex items-center gap-3 px-4 py-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+                          <GithubIcon size={20} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold truncate">LuisBrose</p>
+                          <p className="text-xs text-muted-foreground">github.com/LuisBrose</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "464/183" }}>
+                        {(!mounted || !githubStreakLoaded) && <Skeleton className="absolute inset-0 rounded-none z-0" />}
+                        {mounted && (
+                          <img
+                            src={`${isDark ? "/gh-streak-dark.svg" : "/gh-streak.svg"}?t=${themeCounter}`}
+                            alt="GitHub contribution streak for LuisBrose"
+                            className={`absolute inset-0 w-full h-full object-fill z-10 ${githubStreakLoaded ? "opacity-100" : "opacity-0"}`}
+                            suppressHydrationWarning
+                            onLoad={() => setGithubStreakLoaded(true)}
+                          />
+                        )}
+                      </div>
+                    )}
+                    {githubLangsFailed ? (
+                      <div className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground px-4 pb-3">
+                        <GithubIcon size={16} />
+                        <span>Top languages</span>
+                      </div>
+                    ) : (
+                      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "464/255" }}>
+                        {(!mounted || !githubLangsLoaded) && <Skeleton className="absolute inset-0 rounded-none z-0" />}
+                        {mounted && (
+                          <img
+                            src={`${isDark ? "/gh-langs-dark.svg" : "/gh-langs.svg"}?t=${themeCounter}`}
+                            alt="Top languages for LuisBrose"
+                            className={`absolute inset-0 w-full h-full object-fill z-10 ${githubLangsLoaded ? "opacity-100" : "opacity-0"}`}
+                            suppressHydrationWarning
+                            onLoad={() => setGithubLangsLoaded(true)}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                GitHub stats from personal projects
+              </TooltipContent>
+            </Tooltip>
           </GlowCard>
         </div>
         </div>
