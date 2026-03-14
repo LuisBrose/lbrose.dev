@@ -662,7 +662,7 @@ export function ParticleLogo3d({
 return (
     <div
       className={`w-[400px] h-[400px] relative ${className}`}
-      style={{ display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}
+      style={{ display: "flex", alignItems: "center", justifyContent: "center", overflow: "visible" }}
     >
       <div
         ref={containerRef}
@@ -670,7 +670,7 @@ return (
           width: 400,
           height: 400,
           position: "relative",
-          overflow: "hidden",
+          overflow: "visible",
         }}
       />
     </div>
