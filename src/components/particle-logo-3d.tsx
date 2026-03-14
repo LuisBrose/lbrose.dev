@@ -523,6 +523,8 @@ export function ParticleLogo3d({
           }
         }
       }
+
+      mouseRef.current = null
     }
 
     canvas.addEventListener("mousemove", handleMouseMoveCursor)
