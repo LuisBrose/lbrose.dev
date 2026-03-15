@@ -17,11 +17,12 @@ import { ParticleLogo3d } from "@/components/particle-logo-3d"
 const products = [
   {
     title: "Force Push Button",
-    description: "A VS Code extension that streamlines force-pushing workflows with dedicated buttons in the Source Control view. Features a main button that opens a repository selector for multi-repo workspaces, plus individual buttons in each repository's title bar for quick access. All buttons intelligently activate only when there are changes to push, making force-pushing more convenient.",
+    description: "VS Code extension that adds force-push buttons to Source Control. Supports multi-repo workspaces and activates only when there are changes to push.",
     url: "https://marketplace.visualstudio.com/items?itemName=LuisBrose.force-push-button",
-    urlLabel: "VS Code Marketplace",
+    urlLabel: "VS Marketplace",
     secondaryUrl: "https://open-vsx.org/extension/luisbrose/force-push-button",
     secondaryLabel: "Open VSX",
+    githubUrl: "https://github.com/LuisBrose/force-push-button",
     images: [
       { src: "/thumbnails/force-push-button-1.png", alt: "Force Push Button VS Code Extension - Showcase" },
       { src: "/thumbnails/force-push-button-2.png", alt: "Force Push Button VS Code Extension - Store Page" },
@@ -31,8 +32,9 @@ const products = [
   },
   {
     title: "Poker Leaderboard",
-    description: "Poker leaderboard tracking player stats and rankings.",
+    description: "Track poker performance and stats between friends. View profit and loss, session history, and rankings over time.",
     url: "https://poker.lbrose.dev",
+    githubUrl: "https://github.com/LuisBrose/PokerLeaderboard",
     images: [
       { src: "/thumbnails/poker-leaderboard-1.png", alt: "Poker Leaderboard - Performance Visualization" },
       { src: "/thumbnails/poker-leaderboard-2.png", alt: "Poker Leaderboard - Leaderboard" },
@@ -46,6 +48,7 @@ const products = [
       "Self-hosted Stremio super-addon that aggregates multiple addons and debrid/usenet sources into one highly customisable stream hub.",
     note: "Access to my instance is password-protected feel free to reach out via contact@lbrose.dev for the password.",
     url: "https://aiostreams.lbrose.dev",
+    githubUrl: "https://github.com/Viren070/AIOStreams",
     images: [
       { src: "/thumbnails/aiostreams-1.png", alt: "AIOStreams - Homepage" },
       { src: "/thumbnails/aiostreams-2.png", alt: "AIOStreams - Services" },
@@ -149,12 +152,14 @@ export default function Home() {
                   href="https://www.linkedin.com/in/luisbrose/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-9 md:h-10 px-4 md:px-5 text-sm md:text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+                  className="inline-flex items-center justify-center h-9 md:h-10 px-4 md:px-5 text-sm md:text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors w-[7rem] md:w-[7.5rem]"
                   onMouseEnter={() => linkedinIconRef.current?.startAnimation()}
                   onMouseLeave={() => linkedinIconRef.current?.stopAnimation()}
                 >
-                  <LinkedinIcon ref={linkedinIconRef} size={18} className="mr-1.5 md:mr-2 md:size-5" />
-                  LinkedIn
+                  <span className="inline-flex items-center gap-1.5 md:gap-2 [&_svg]:size-[1em]">
+                    <LinkedinIcon ref={linkedinIconRef} />
+                    LinkedIn
+                  </span>
                 </a>
                 <a href="#about" onClick={handleAnchorClick("#about")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group">
                   <span>More</span>
@@ -166,12 +171,14 @@ export default function Home() {
                   href="https://github.com/LuisBrose"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-9 md:h-10 px-4 md:px-5 text-sm md:text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors"
+                  className="inline-flex items-center justify-center h-9 md:h-10 px-4 md:px-5 text-sm md:text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors w-[7rem] md:w-[7.5rem]"
                   onMouseEnter={() => githubIconRef.current?.startAnimation()}
                   onMouseLeave={() => githubIconRef.current?.stopAnimation()}
                 >
-                  <GithubIcon ref={githubIconRef} size={18} className="mr-1.5 md:mr-2 md:size-5" />
-                  GitHub
+                  <span className="inline-flex items-center gap-1.5 md:gap-2 [&_svg]:size-[1em]">
+                    <GithubIcon ref={githubIconRef} />
+                    GitHub
+                  </span>
                 </a>
                 <a href="#about" onClick={handleAnchorClick("#about")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group">
                   <span>More</span>
@@ -189,8 +196,10 @@ export default function Home() {
               onMouseEnter={() => emailIconRef.current?.startAnimation()}
               onMouseLeave={() => emailIconRef.current?.stopAnimation()}
             >
-              <AtSignIcon ref={emailIconRef} size={16} className="mr-1" />
-              Mail
+              <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
+                <AtSignIcon ref={emailIconRef} />
+                Mail
+              </span>
             </a>
             <button
               onClick={copyEmail}
@@ -198,8 +207,10 @@ export default function Home() {
               onMouseEnter={() => copyIconRef.current?.startAnimation()}
               onMouseLeave={() => copyIconRef.current?.stopAnimation()}
             >
-              <CopyIcon ref={copyIconRef} size={16} className="mr-1" />
-              Copy
+              <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
+                <CopyIcon ref={copyIconRef} />
+                Copy
+              </span>
             </button>
           </div>
         </div>
@@ -215,7 +226,7 @@ export default function Home() {
                 <CardTitle className="text-base">About Me</CardTitle>
               </CardHeader>
               <div className="flex justify-center pt-0">
-                <div className="w-full bg-muted/50 rounded-lg">
+                <div className="w-full bg-muted/30 rounded-lg">
                   <div className="linkedin-badge-wrapper relative mx-auto" style={{ width: 330 }}>
                   {isLinkedinBadgeLoading && !showLinkedinFallback && <LinkedinBadgeSkeleton />}
                   {showLinkedinFallback && (

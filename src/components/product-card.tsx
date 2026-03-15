@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ChevronRightIcon } from "lucide-animated"
+import { ChevronRightIcon, GithubIcon } from "lucide-animated"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { GlowCard } from "@/components/glow-card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
@@ -17,6 +17,7 @@ interface ProductCardProps {
   urlLabel?: string
   secondaryUrl?: string
   secondaryLabel?: string
+  githubUrl?: string
   images?: { src: string; alt: string }[]
   isBuiltByMe?: boolean
 }
@@ -49,11 +50,13 @@ export function ProductCard({
   urlLabel,
   secondaryUrl,
   secondaryLabel,
+  githubUrl,
   images,
   isBuiltByMe = false,
 }: ProductCardProps) {
   const primaryIconRef = useRef<React.ComponentRef<typeof ChevronRightIcon>>(null)
   const secondaryIconRef = useRef<React.ComponentRef<typeof ChevronRightIcon>>(null)
+  const githubIconRef = useRef<React.ComponentRef<typeof GithubIcon>>(null)
 
   return (
     <GlowCard className="rounded-xl">
@@ -83,29 +86,48 @@ export function ProductCard({
           )}
         </CardHeader>
         <div className="px-6 pb-4">
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-nowrap gap-2">
             <Link
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-muted transition-colors"
+              className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
               onMouseEnter={() => primaryIconRef.current?.startAnimation()}
               onMouseLeave={() => primaryIconRef.current?.stopAnimation()}
             >
-              <span className="mr-1">{urlLabel ?? "Visit"}</span>
-              <ChevronRightIcon ref={primaryIconRef} size={16} />
+              <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
+                {urlLabel ?? "Visit"}
+                <ChevronRightIcon ref={primaryIconRef} />
+              </span>
             </Link>
             {secondaryUrl && (
               <Link
                 href={secondaryUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-muted transition-colors"
+                className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
                 onMouseEnter={() => secondaryIconRef.current?.startAnimation()}
                 onMouseLeave={() => secondaryIconRef.current?.stopAnimation()}
               >
-                <span className="mr-1">{secondaryLabel ?? "Open VSX"}</span>
-                <ChevronRightIcon ref={secondaryIconRef} size={16} />
+                <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
+                  {secondaryLabel ?? "Open VSX"}
+                  <ChevronRightIcon ref={secondaryIconRef} />
+                </span>
+              </Link>
+            )}
+            {githubUrl && (
+              <Link
+                href={githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
+                onMouseEnter={() => githubIconRef.current?.startAnimation()}
+                onMouseLeave={() => githubIconRef.current?.stopAnimation()}
+              >
+                <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
+                  <GithubIcon ref={githubIconRef} />
+                  GitHub
+                </span>
               </Link>
             )}
           </div>

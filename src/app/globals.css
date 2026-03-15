@@ -127,6 +127,9 @@
     @apply font-sans overflow-x-hidden;
     font-size: 120%;
   }
+  header {
+    view-transition-name: none;
+  }
 }
 
 ::view-transition-old(root),
