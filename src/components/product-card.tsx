@@ -128,7 +128,7 @@ function PreviewImage({
         src={imageSrc}
         alt={alt}
         fill
-        sizes="(min-width: 768px) 60vw, 95vw"
+        sizes="(min-width: 1400px) 60vw, (min-width: 768px) 80vw, 95vw"
         className="object-contain"
         priority
         onLoad={onLoad}
@@ -271,7 +271,7 @@ export function ProductCard({
 
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
         <DialogOverlay />
-        <DialogContent className="!max-w-[95vw] md:!max-w-[60vw] !w-[95vw] md:!w-[60vw] p-0 overflow-visible bg-transparent border-0 shadow-none ring-0 rounded-none" showCloseButton={false}>
+        <DialogContent className="!max-w-[95vw] min-[768px]:!max-w-[80vw] min-[1400px]:!max-w-[60vw] !w-[95vw] min-[768px]:!w-[80vw] min-[1400px]:!w-[60vw] p-0 overflow-visible bg-transparent border-0 shadow-none ring-0 rounded-none" showCloseButton={false}>
           {images && images.length > 0 && (
             <ImageCarousel images={images} startIndex={previewIndex} />
           )}
