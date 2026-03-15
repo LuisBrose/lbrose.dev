@@ -43,6 +43,21 @@ const products = [
     isBuiltByMe: true,
   },
   {
+    title: "MCP Chatbot",
+    description: "Educational application for visualizing communication between LLMs and MCP servers. Explore how LLMs discover and call tools, with detailed token analysis.",
+    note: "Requires a GitLab account from Stralsund University of Applied Sciences. Uses the university's vLLM instance to access internal models and visualize logs.",
+    url: "https://laboration.hochschule-stralsund.de",
+    images: [
+      { src: "/thumbnails/mcp-chatbot-1.png", srcDark: "/thumbnails/mcp-chatbot-1-dark.png", alt: "MCP Chatbot - Overview" },
+      { src: "/thumbnails/mcp-chatbot-2.png", srcDark: "/thumbnails/mcp-chatbot-2-dark.png", alt: "MCP Chatbot - Tool Discovery" },
+      { src: "/thumbnails/mcp-chatbot-3.png", srcDark: "/thumbnails/mcp-chatbot-3-dark.png", alt: "MCP Chatbot - Tool Calls" },
+      { src: "/thumbnails/mcp-chatbot-4.png", srcDark: "/thumbnails/mcp-chatbot-4-dark.png", alt: "MCP Chatbot - Token Analysis" },
+      { src: "/thumbnails/mcp-chatbot-5.png", srcDark: "/thumbnails/mcp-chatbot-5-dark.png", alt: "MCP Chatbot - Chat History" },
+      { src: "/thumbnails/mcp-chatbot-6.png", srcDark: "/thumbnails/mcp-chatbot-6-dark.png", alt: "MCP Chatbot - System Messages" },
+    ],
+    isBuiltByMe: true,
+  },
+  {
     title: "AIOStreams",
     description:
       "Self-hosted Stremio super-addon that aggregates multiple addons and debrid/usenet sources into one highly customisable stream hub.",
