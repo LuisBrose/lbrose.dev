@@ -11,8 +11,7 @@ import { LinkedinBadgeFallback } from "@/components/linkedin-badge-fallback"
 import { useLinkedinBadge } from "@/hooks/use-linkedin-badge"
 import { GlowCard } from "@/components/glow-card"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { ParticleLogo3d } from "@/components/particle-logo-3d"
 
 const products = [
@@ -212,8 +211,12 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           <GlowCard className="rounded-lg">
             <Card>
-              <div className="flex justify-center p-4 pt-5">
-                <div className="linkedin-badge-wrapper relative" style={{ width: 330 }}>
+              <CardHeader className="p-4 pb-2 pt-0">
+                <CardTitle className="text-base">About Me</CardTitle>
+              </CardHeader>
+              <div className="flex justify-center pt-0">
+                <div className="w-full bg-muted/50 rounded-lg">
+                  <div className="linkedin-badge-wrapper relative mx-auto" style={{ width: 330 }}>
                   {isLinkedinBadgeLoading && !showLinkedinFallback && <LinkedinBadgeSkeleton />}
                   {showLinkedinFallback && (
                     <>
@@ -261,6 +264,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+            </div>
               <CardContent className="space-y-3">
                 <p className="text-sm text-muted-foreground">
                   Developing Software @{" "}
@@ -293,19 +297,12 @@ export default function Home() {
           </GlowCard>
           
           <GlowCard className="rounded-lg">
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <a
-                    href="https://github.com/LuisBrose"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
-                  />
-                }
-              >
-                <Card className="p-0 gap-0">
-                  <div className="github-card">
+            <a href="https://github.com/LuisBrose" target="_blank" rel="noopener noreferrer" className="block">
+              <Card className="p-0 gap-0">
+                <CardHeader className="p-4 pb-2">
+                  <CardTitle className="text-base">GitHub Stats <span className="text-muted-foreground">personal projects</span></CardTitle>
+                </CardHeader>
+                <div className="github-card">
                     {githubStreakFailed ? (
                       <div className="flex items-center gap-3 px-4 py-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
@@ -350,12 +347,8 @@ export default function Home() {
                       </div>
                     )}
                   </div>
-                </Card>
-              </TooltipTrigger>
-              <TooltipContent side="top">
-                GitHub stats from personal projects
-              </TooltipContent>
-            </Tooltip>
+              </Card>
+            </a>
           </GlowCard>
         </div>
         </div>
