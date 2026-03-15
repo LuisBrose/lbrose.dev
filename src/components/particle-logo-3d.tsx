@@ -532,7 +532,6 @@ export function ParticleLogo3d({
     canvas.addEventListener("click", handleClick)
 
     const handleTouchMove = (event: TouchEvent) => {
-      event.preventDefault()
       const containerRect = container.getBoundingClientRect()
       const touch = event.touches[0]
       if (touch) {
@@ -573,7 +572,7 @@ export function ParticleLogo3d({
     }
 
     canvas.addEventListener("touchstart", handleTouchStart)
-    canvas.addEventListener("touchmove", handleTouchMove, { passive: false })
+    canvas.addEventListener("touchmove", handleTouchMove)
     window.addEventListener("touchend", handleTouchEnd)
     window.addEventListener("touchcancel", handleTouchEnd)
 
