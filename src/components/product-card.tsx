@@ -1,66 +1,33 @@
 "use client"
 
-import { useState, useCallback, useRef, useEffect } from "react"
+import { useState, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { useTheme } from "next-themes"
 import { ChevronRightIcon, GithubIcon } from "lucide-animated"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { GlowCard } from "@/components/glow-card"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Dialog, DialogContent, DialogOverlay } from "@/components/ui/dialog"
+import { useThemeTransition } from "@/hooks/use-theme-transition"
+import type { Product } from "@/data/products"
 
-interface ProductCardProps {
-  title: string
-  description: string
-  note?: string
-  url: string
-  urlLabel?: string
-  secondaryUrl?: string
-  secondaryLabel?: string
-  githubUrl?: string
-  images?: { src: string; alt: string; srcDark?: string }[]
-  isBuiltByMe?: boolean
-}
+type ProductCardProps = Product
 
-function CarouselImage({ 
-  src, 
-  srcDark, 
-  alt, 
-  onClick 
-}: { 
+function CarouselImage({
+  src,
+  srcDark,
+  alt,
+  isDark,
+  onClick,
+}: {
   src: string
   srcDark?: string
   alt: string
-  onClick?: () => void 
+  isDark: boolean
+  onClick?: () => void
 }) {
   const [loaded, setLoaded] = useState(false)
-  const [mounted, setMounted] = useState(false)
-  const { resolvedTheme } = useTheme()
-  const [visualTheme, setVisualTheme] = useState<"light" | "dark" | null>(null)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    const handleThemeTransition = (e: CustomEvent<{ theme: string }>) => {
-      setVisualTheme(e.detail.theme as "light" | "dark")
-    }
-    window.addEventListener("theme-transition", handleThemeTransition as EventListener)
-    return () => {
-      window.removeEventListener("theme-transition", handleThemeTransition as EventListener)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (visualTheme && resolvedTheme === visualTheme) {
-      setVisualTheme(null)
-    }
-  }, [resolvedTheme, visualTheme])
-
-  const isDark = mounted && (visualTheme ?? resolvedTheme) === "dark"
   const imageSrc = srcDark && isDark ? srcDark : src
 
   const onLoad = useCallback(() => setLoaded(true), [])
@@ -84,42 +51,19 @@ function CarouselImage({
   )
 }
 
-function PreviewImage({ 
-  src, 
-  srcDark, 
-  alt, 
-  onLoad 
-}: { 
+function PreviewImage({
+  src,
+  srcDark,
+  alt,
+  isDark,
+  onLoad,
+}: {
   src: string
   srcDark?: string
   alt: string
-  onLoad?: () => void 
+  isDark: boolean
+  onLoad?: () => void
 }) {
-  const [mounted, setMounted] = useState(false)
-  const { resolvedTheme } = useTheme()
-  const [visualTheme, setVisualTheme] = useState<"light" | "dark" | null>(null)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    const handleThemeTransition = (e: CustomEvent<{ theme: string }>) => {
-      setVisualTheme(e.detail.theme as "light" | "dark")
-    }
-    window.addEventListener("theme-transition", handleThemeTransition as EventListener)
-    return () => {
-      window.removeEventListener("theme-transition", handleThemeTransition as EventListener)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (visualTheme && resolvedTheme === visualTheme) {
-      setVisualTheme(null)
-    }
-  }, [resolvedTheme, visualTheme])
-
-  const isDark = mounted && (visualTheme ?? resolvedTheme) === "dark"
   const imageSrc = srcDark && isDark ? srcDark : src
 
   return (
@@ -137,12 +81,14 @@ function PreviewImage({
   )
 }
 
-function ImageCarousel({ 
-  images, 
-  startIndex 
-}: { 
+function ImageCarousel({
+  images,
+  startIndex,
+  isDark,
+}: {
   images: { src: string; alt: string; srcDark?: string }[]
-  startIndex: number 
+  startIndex: number
+  isDark: boolean
 }) {
   return (
     <Carousel key={startIndex} className="w-full">
@@ -153,6 +99,7 @@ function ImageCarousel({
               src={image.src}
               srcDark={image.srcDark}
               alt={image.alt}
+              isDark={isDark}
             />
           </CarouselItem>
         ))}
@@ -173,11 +120,11 @@ export function ProductCard({
   secondaryLabel,
   githubUrl,
   images,
-  isBuiltByMe = false,
 }: ProductCardProps) {
   const primaryIconRef = useRef<React.ComponentRef<typeof ChevronRightIcon>>(null)
   const secondaryIconRef = useRef<React.ComponentRef<typeof ChevronRightIcon>>(null)
   const githubIconRef = useRef<React.ComponentRef<typeof GithubIcon>>(null)
+  const { isDark } = useThemeTransition()
   const [previewOpen, setPreviewOpen] = useState(false)
   const [previewIndex, setPreviewIndex] = useState(0)
 
@@ -200,6 +147,7 @@ export function ProductCard({
                         src={image.src} 
                         srcDark={image.srcDark} 
                         alt={image.alt} 
+                        isDark={isDark}
                         onClick={() => handleImageClick(index)}
                       />
                     </CarouselItem>
@@ -273,7 +221,7 @@ export function ProductCard({
         <DialogOverlay />
         <DialogContent className="!max-w-[95vw] min-[768px]:!max-w-[80vw] min-[1400px]:!max-w-[60vw] !w-[95vw] min-[768px]:!w-[80vw] min-[1400px]:!w-[60vw] p-0 overflow-visible bg-transparent border-0 shadow-none ring-0 rounded-none" showCloseButton={false}>
           {images && images.length > 0 && (
-            <ImageCarousel images={images} startIndex={previewIndex} />
+            <ImageCarousel images={images} startIndex={previewIndex} isDark={isDark} />
           )}
         </DialogContent>
       </Dialog>

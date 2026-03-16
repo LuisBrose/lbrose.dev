@@ -1,7 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef, useLayoutEffect, useCallback } from "react"
-import { useTheme } from "next-themes"
+import { useState, useRef, useLayoutEffect } from "react"
 import { GithubIcon, LinkedinIcon, CopyIcon, AtSignIcon } from "lucide-animated"
 import { ChevronDown } from "lucide-react"
 import { toast } from "sonner"
@@ -13,78 +12,72 @@ import { GlowCard } from "@/components/glow-card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { ParticleLogo3d } from "@/components/particle-logo-3d"
+import { products } from "@/data/products"
+import { useThemeTransition } from "@/hooks/use-theme-transition"
+import { useGithubStatsImages } from "@/hooks/use-github-stats-images"
 
-const products = [
-  {
-    title: "Force Push Button",
-    description: "VS Code extension that adds force-push buttons to Source Control. Supports multi-repo workspaces and activates only when there are changes to push.",
-    url: "https://marketplace.visualstudio.com/items?itemName=LuisBrose.force-push-button",
-    urlLabel: "VS Marketplace",
-    secondaryUrl: "https://open-vsx.org/extension/luisbrose/force-push-button",
-    secondaryLabel: "Open VSX",
-    githubUrl: "https://github.com/LuisBrose/force-push-button",
-    images: [
-      { src: "/thumbnails/force-push-button-1.png", alt: "Force Push Button VS Code Extension - Showcase" },
-      { src: "/thumbnails/force-push-button-2.png", alt: "Force Push Button VS Code Extension - Store Page" },
-      { src: "/thumbnails/force-push-button-3.png", alt: "Force Push Button VS Code Extension - Settings" },
-    ],
-    isBuiltByMe: true,
-  },
-  {
-    title: "Poker Leaderboard",
-    description: "Track poker performance and stats between friends. View profit and loss, session history, and rankings over time.",
-    url: "https://poker.lbrose.dev",
-    githubUrl: "https://github.com/LuisBrose/PokerLeaderboard",
-    images: [
-      { src: "/thumbnails/poker-leaderboard-1.png", alt: "Poker Leaderboard - Performance Visualization" },
-      { src: "/thumbnails/poker-leaderboard-2.png", alt: "Poker Leaderboard - Leaderboard" },
-      { src: "/thumbnails/poker-leaderboard-3.png", alt: "Poker Leaderboard - Session History" },
-    ],
-    isBuiltByMe: true,
-  },
-  {
-    title: "MCP Chatbot",
-    description: "Educational application for visualizing communication between LLMs and MCP servers. Explore how LLMs discover and call tools, with detailed token analysis.",
-    note: "Requires a GitLab account from Stralsund University of Applied Sciences. Uses the university's vLLM instance to access internal models and visualize logs.",
-    url: "https://laboration.hochschule-stralsund.de",
-    images: [
-      { src: "/thumbnails/mcp-chatbot-1.png", srcDark: "/thumbnails/mcp-chatbot-1-dark.png", alt: "MCP Chatbot - Overview" },
-      { src: "/thumbnails/mcp-chatbot-2.png", srcDark: "/thumbnails/mcp-chatbot-2-dark.png", alt: "MCP Chatbot - Tool Discovery" },
-      { src: "/thumbnails/mcp-chatbot-3.png", srcDark: "/thumbnails/mcp-chatbot-3-dark.png", alt: "MCP Chatbot - Tool Calls" },
-      { src: "/thumbnails/mcp-chatbot-4.png", srcDark: "/thumbnails/mcp-chatbot-4-dark.png", alt: "MCP Chatbot - Token Analysis" },
-      { src: "/thumbnails/mcp-chatbot-5.png", srcDark: "/thumbnails/mcp-chatbot-5-dark.png", alt: "MCP Chatbot - Chat History" },
-      { src: "/thumbnails/mcp-chatbot-6.png", srcDark: "/thumbnails/mcp-chatbot-6-dark.png", alt: "MCP Chatbot - System Messages" },
-    ],
-    isBuiltByMe: true,
-  },
-  {
-    title: "AIOStreams",
-    description:
-      "Self-hosted Stremio super-addon that aggregates multiple addons and debrid/usenet sources into one highly customisable stream hub.",
-    note: "Access to my instance is password-protected feel free to reach out via contact@lbrose.dev for the password.",
-    url: "https://aiostreams.lbrose.dev",
-    githubUrl: "https://github.com/Viren070/AIOStreams",
-    images: [
-      { src: "/thumbnails/aiostreams-1.png", alt: "AIOStreams - Homepage" },
-      { src: "/thumbnails/aiostreams-2.png", alt: "AIOStreams - Services" },
-      { src: "/thumbnails/aiostreams-3.png", alt: "AIOStreams - Filters" },
-    ],
-    isBuiltByMe: false,
-  },
-]
+function getEmploymentDuration(startDate: Date, endDate: Date) {
+  const diffMs = endDate.getTime() - startDate.getTime()
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+  const years = Math.floor(diffDays / 365)
+  const days = diffDays % 365
+  return { years, days }
+}
+
+function MoreLink({ href, onClick }: { href: string; onClick: (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => void }) {
+  return (
+    <a href={href} onClick={onClick(href)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group">
+      <span>More</span>
+      <ChevronDown className="size-4 animate-bounce" />
+    </a>
+  )
+}
+
+function SocialButton({
+  href,
+  label,
+  icon,
+  iconRef,
+  onMouseEnter,
+  onMouseLeave,
+}: {
+  href: string
+  label: string
+  icon: React.ReactNode
+  iconRef?: React.RefObject<{ startAnimation: () => void; stopAnimation: () => void } | null>
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center justify-center h-9 md:h-10 px-4 md:px-5 text-sm md:text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors w-[7rem] md:w-[7.5rem]"
+      onMouseEnter={() => {
+        iconRef?.current?.startAnimation()
+        onMouseEnter?.()
+      }}
+      onMouseLeave={() => {
+        iconRef?.current?.stopAnimation()
+        onMouseLeave?.()
+      }}
+    >
+      <span className="inline-flex items-center gap-1.5 md:gap-2 [&_svg]:size-[1em]">
+        {icon}
+        {label}
+      </span>
+    </a>
+  )
+}
 
 export default function Home() {
   const [githubStreakFailed, setGithubStreakFailed] = useState(false)
   const [githubLangsFailed, setGithubLangsFailed] = useState(false)
-  const [githubStreakLoaded, setGithubStreakLoaded] = useState(false)
-  const [githubLangsLoaded, setGithubLangsLoaded] = useState(false)
-  const [mounted, setMounted] = useState(false)
-  const { resolvedTheme } = useTheme()
-  const [visualTheme, setVisualTheme] = useState<"light" | "dark" | undefined>(undefined)
-  const isDark = visualTheme === "dark" || (visualTheme === undefined && resolvedTheme === "dark")
+  const { isDark, mounted, resolvedTheme, themeCounter } = useThemeTransition()
+  const { streakLoaded: githubStreakLoaded, langsLoaded: githubLangsLoaded, onStreakLoad, onLangsLoad } =
+    useGithubStatsImages(themeCounter)
   const prevTheme = useRef(resolvedTheme)
-  const skipNextThemeUpdate = useRef(false)
-  const [themeCounter, setThemeCounter] = useState(0)
   const { isLoading: isLinkedinBadgeLoading, showFallback: showLinkedinFallback } = useLinkedinBadge()
   const email = "contact@lbrose.dev"
 
@@ -93,35 +86,11 @@ export default function Home() {
   const emailIconRef = useRef<React.ComponentRef<typeof AtSignIcon>>(null)
   const copyIconRef = useRef<React.ComponentRef<typeof CopyIcon>>(null)
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const handleThemeTransition = useCallback((e: CustomEvent<{ theme: string }>) => {
-    setVisualTheme(e.detail.theme as "light" | "dark")
-    setThemeCounter((c) => c + 1)
-    skipNextThemeUpdate.current = true
-  }, [])
-
-  useEffect(() => {
-    window.addEventListener("theme-transition", handleThemeTransition as EventListener)
-    return () => {
-      window.removeEventListener("theme-transition", handleThemeTransition as EventListener)
-    }
-  }, [handleThemeTransition])
-
   useLayoutEffect(() => {
-    if (skipNextThemeUpdate.current) {
-      skipNextThemeUpdate.current = false
-      prevTheme.current = resolvedTheme
-      return
-    }
     if (mounted && resolvedTheme !== prevTheme.current) {
       prevTheme.current = resolvedTheme
-      setGithubStreakLoaded(false)
-      setGithubLangsLoaded(false)
-      setThemeCounter((c) => c + 1)
-      setVisualTheme(resolvedTheme as "light" | "dark")
+      setGithubStreakFailed(false)
+      setGithubLangsFailed(false)
     }
   }, [resolvedTheme, mounted])
 
@@ -161,44 +130,24 @@ export default function Home() {
           </div>
           
           <div className="flex-1 flex flex-col items-center justify-center pointer-events-auto">
-            <div className="flex flex-col items-center gap-3">
+              <div className="flex flex-col items-center gap-3">
               <div className="flex items-center gap-2">
-                <a
+                <SocialButton
                   href="https://www.linkedin.com/in/luisbrose/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-9 md:h-10 px-4 md:px-5 text-sm md:text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors w-[7rem] md:w-[7.5rem]"
-                  onMouseEnter={() => linkedinIconRef.current?.startAnimation()}
-                  onMouseLeave={() => linkedinIconRef.current?.stopAnimation()}
-                >
-                  <span className="inline-flex items-center gap-1.5 md:gap-2 [&_svg]:size-[1em]">
-                    <LinkedinIcon ref={linkedinIconRef} />
-                    LinkedIn
-                  </span>
-                </a>
-                <a href="#about" onClick={handleAnchorClick("#about")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group">
-                  <span>More</span>
-                  <ChevronDown className="size-4 animate-bounce" />
-                </a>
+                  label="LinkedIn"
+                  icon={<LinkedinIcon ref={linkedinIconRef} />}
+                  iconRef={linkedinIconRef}
+                />
+                <MoreLink href="#about" onClick={handleAnchorClick} />
               </div>
               <div className="flex items-center gap-2">
-                <a
+                <SocialButton
                   href="https://github.com/LuisBrose"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-9 md:h-10 px-4 md:px-5 text-sm md:text-base font-medium rounded-md border border-border bg-background hover:bg-muted transition-colors w-[7rem] md:w-[7.5rem]"
-                  onMouseEnter={() => githubIconRef.current?.startAnimation()}
-                  onMouseLeave={() => githubIconRef.current?.stopAnimation()}
-                >
-                  <span className="inline-flex items-center gap-1.5 md:gap-2 [&_svg]:size-[1em]">
-                    <GithubIcon ref={githubIconRef} />
-                    GitHub
-                  </span>
-                </a>
-                <a href="#about" onClick={handleAnchorClick("#about")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group">
-                  <span>More</span>
-                  <ChevronDown className="size-4 animate-bounce" />
-                </a>
+                  label="GitHub"
+                  icon={<GithubIcon ref={githubIconRef} />}
+                  iconRef={githubIconRef}
+                />
+                <MoreLink href="#about" onClick={handleAnchorClick} />
               </div>
             </div>
           </div>
@@ -300,11 +249,7 @@ export default function Home() {
                   {" "}for{" "}
                   {(() => {
                     const start = new Date(2023, 8, 1)
-                    const now = new Date()
-                    const diffMs = now.getTime() - start.getTime()
-                    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
-                    const years = Math.floor(diffDays / 365)
-                    const days = diffDays % 365
+                    const { years, days } = getEmploymentDuration(start, new Date())
                     return (
                       <span className="text-foreground font-medium">
                         {years} years{days > 0 ? ` ${days} days` : ""}
@@ -348,7 +293,7 @@ export default function Home() {
                             alt="GitHub contribution streak for LuisBrose"
                             className={`absolute inset-0 w-full h-full object-fill z-10 ${githubStreakLoaded ? "opacity-100" : "opacity-0"}`}
                             suppressHydrationWarning
-                            onLoad={() => setGithubStreakLoaded(true)}
+                            onLoad={onStreakLoad}
                           />
                         )}
                       </div>
@@ -367,7 +312,7 @@ export default function Home() {
                             alt="Top languages for LuisBrose"
                             className={`absolute inset-0 w-full h-full object-fill z-10 ${githubLangsLoaded ? "opacity-100" : "opacity-0"}`}
                             suppressHydrationWarning
-                            onLoad={() => setGithubLangsLoaded(true)}
+                            onLoad={onLangsLoad}
                           />
                         )}
                       </div>
@@ -385,7 +330,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold mb-6">Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             {products
-              .filter((product) => product.isBuiltByMe)
+              .filter((product) => product.section === "projects")
               .map((product) => (
                 <ProductCard key={product.title} {...product} />
               ))}
@@ -396,7 +341,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold mb-6">Hosting</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             {products
-              .filter((product) => !product.isBuiltByMe)
+              .filter((product) => product.section === "hosting")
               .map((product) => (
                 <ProductCard key={product.title} {...product} />
               ))}
