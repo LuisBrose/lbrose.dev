@@ -2,12 +2,14 @@ export interface Product {
   title: string
   description: string
   note?: string
-  url: string
+  url?: string
   urlLabel?: string
+  urlIcon?: "download"
   secondaryUrl?: string
   secondaryLabel?: string
   githubUrl?: string
   images?: { src: string; alt: string; srcDark?: string }[]
+  projectType?: "personal" | "uni"
   section: "projects" | "hosting"
 }
 
@@ -26,18 +28,7 @@ export const products: Product[] = [
       { src: "/thumbnails/force-push-button-2.png", alt: "Force Push Button VS Code Extension - Store Page" },
       { src: "/thumbnails/force-push-button-3.png", alt: "Force Push Button VS Code Extension - Settings" },
     ],
-    section: "projects",
-  },
-  {
-    title: "Poker Leaderboard",
-    description: "Track poker performance and stats between friends. View profit and loss, session history, and rankings over time.",
-    url: "https://poker.lbrose.dev",
-    githubUrl: "https://github.com/LuisBrose/PokerLeaderboard",
-    images: [
-      { src: "/thumbnails/poker-leaderboard-1.png", alt: "Poker Leaderboard - Performance Visualization" },
-      { src: "/thumbnails/poker-leaderboard-2.png", alt: "Poker Leaderboard - Leaderboard" },
-      { src: "/thumbnails/poker-leaderboard-3.png", alt: "Poker Leaderboard - Session History" },
-    ],
+    projectType: "personal",
     section: "projects",
   },
   {
@@ -54,6 +45,42 @@ export const products: Product[] = [
       { src: "/thumbnails/mcp-chatbot-5.png", srcDark: "/thumbnails/mcp-chatbot-5-dark.png", alt: "MCP Chatbot - Chat History" },
       { src: "/thumbnails/mcp-chatbot-6.png", srcDark: "/thumbnails/mcp-chatbot-6-dark.png", alt: "MCP Chatbot - System Messages" },
     ],
+    projectType: "uni",
+    section: "projects",
+  },
+  {
+    title: "Multiplayer Survival Game",
+    description:
+      "Multiplayer survival game with a dedicated server system, base building, procedural generation, farming, and enemy camps.",
+    url: "https://github.com/LuisBrose/projekt-atze/releases/download/v1.0.0/ProjektAtze.exe",
+    urlLabel: "Download",
+    urlIcon: "download",
+    githubUrl: "https://github.com/LuisBrose/projekt-atze",
+    images: [
+      { src: "/thumbnails/project-atze-1.png", alt: "Multiplayer Survival Game - Landscape" },
+      { src: "/thumbnails/project-atze-2.png", alt: "Multiplayer Survival Game - Base Building" },
+      { src: "/thumbnails/project-atze-3.png", alt: "Multiplayer Survival Game - Environment" },
+      { src: "/thumbnails/project-atze-4.png", alt: "Multiplayer Survival Game - Settlement" },
+      { src: "/thumbnails/project-atze-5.png", alt: "Multiplayer Survival Game - Terrain" },
+      { src: "/thumbnails/project-atze-6.png", alt: "Multiplayer Survival Game - Night Scene" },
+      { src: "/thumbnails/project-atze-7.png", alt: "Multiplayer Survival Game - Combat" },
+      { src: "/thumbnails/project-atze-8.png", alt: "Multiplayer Survival Game - Base Interior" },
+      { src: "/thumbnails/project-atze-9.png", alt: "Multiplayer Survival Game - New Screenshot" },
+    ],
+    projectType: "uni",
+    section: "projects",
+  },
+  {
+    title: "Poker Leaderboard",
+    description: "Track poker performance and stats between friends. View profit and loss, session history, and rankings over time.",
+    url: "https://poker.lbrose.dev",
+    githubUrl: "https://github.com/LuisBrose/PokerLeaderboard",
+    images: [
+      { src: "/thumbnails/poker-leaderboard-1.png", alt: "Poker Leaderboard - Performance Visualization" },
+      { src: "/thumbnails/poker-leaderboard-2.png", alt: "Poker Leaderboard - Leaderboard" },
+      { src: "/thumbnails/poker-leaderboard-3.png", alt: "Poker Leaderboard - Session History" },
+    ],
+    projectType: "personal",
     section: "projects",
   },
   {

@@ -3,12 +3,13 @@
 import { useState, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ChevronRightIcon, GithubIcon } from "lucide-animated"
+import { ChevronRightIcon, GithubIcon, DownloadIcon } from "lucide-animated"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { GlowCard } from "@/components/glow-card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Dialog, DialogContent, DialogOverlay } from "@/components/ui/dialog"
+import { Badge } from "@/components/ui/badge"
 import { useThemeTransition } from "@/hooks/use-theme-transition"
 import type { Product } from "@/data/products"
 
@@ -116,10 +117,12 @@ export function ProductCard({
   note,
   url,
   urlLabel,
+  urlIcon,
   secondaryUrl,
   secondaryLabel,
   githubUrl,
   images,
+  projectType,
 }: ProductCardProps) {
   const primaryIconRef = useRef<React.ComponentRef<typeof ChevronRightIcon>>(null)
   const secondaryIconRef = useRef<React.ComponentRef<typeof ChevronRightIcon>>(null)
@@ -159,7 +162,14 @@ export function ProductCard({
             </div>
           )}
           <CardHeader>
-            <CardTitle className="text-lg">{title}</CardTitle>
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-lg">{title}</CardTitle>
+              {projectType && (
+                <Badge variant="secondary">
+                  {projectType === "uni" ? "University" : "Personal"}
+                </Badge>
+              )}
+            </div>
             <CardDescription className="mt-2 text-base">{description}</CardDescription>
             {note && (
               <p className="mt-1 text-[10px] text-muted-foreground/80 italic">
@@ -167,53 +177,57 @@ export function ProductCard({
               </p>
             )}
           </CardHeader>
-          <div className="px-6 pb-4">
-            <div className="flex flex-nowrap gap-2">
-              <Link
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
-                onMouseEnter={() => primaryIconRef.current?.startAnimation()}
-                onMouseLeave={() => primaryIconRef.current?.stopAnimation()}
-              >
-                <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
-                  {urlLabel ?? "Visit"}
-                  <ChevronRightIcon ref={primaryIconRef} />
-                </span>
-              </Link>
-              {secondaryUrl && (
-                <Link
-                  href={secondaryUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
-                  onMouseEnter={() => secondaryIconRef.current?.startAnimation()}
-                  onMouseLeave={() => secondaryIconRef.current?.stopAnimation()}
-                >
-                  <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
-                    {secondaryLabel ?? "Open VSX"}
-                    <ChevronRightIcon ref={secondaryIconRef} />
-                  </span>
-                </Link>
-              )}
-              {githubUrl && (
-                <Link
-                  href={githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
-                  onMouseEnter={() => githubIconRef.current?.startAnimation()}
-                  onMouseLeave={() => githubIconRef.current?.stopAnimation()}
-                >
-                  <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
-                    <GithubIcon ref={githubIconRef} />
-                    GitHub
-                  </span>
-                </Link>
-              )}
+          {(url || secondaryUrl || githubUrl) && (
+            <div className="px-6 pb-4">
+              <div className="flex flex-wrap gap-2">
+                {url && (
+                  <Link
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
+                    onMouseEnter={() => primaryIconRef.current?.startAnimation()}
+                    onMouseLeave={() => primaryIconRef.current?.stopAnimation()}
+                  >
+                    <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
+                      {urlLabel ?? "Visit"}
+                      {urlIcon === "download" ? <DownloadIcon ref={primaryIconRef} /> : <ChevronRightIcon ref={primaryIconRef} />}
+                    </span>
+                  </Link>
+                )}
+                {secondaryUrl && (
+                  <Link
+                    href={secondaryUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
+                    onMouseEnter={() => secondaryIconRef.current?.startAnimation()}
+                    onMouseLeave={() => secondaryIconRef.current?.stopAnimation()}
+                  >
+                    <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
+                      {secondaryLabel ?? "Open VSX"}
+                      <ChevronRightIcon ref={secondaryIconRef} />
+                    </span>
+                  </Link>
+                )}
+                {githubUrl && (
+                  <Link
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
+                    onMouseEnter={() => githubIconRef.current?.startAnimation()}
+                    onMouseLeave={() => githubIconRef.current?.stopAnimation()}
+                  >
+                    <span className="inline-flex items-center gap-1 [&_svg]:size-[1em]">
+                      <GithubIcon ref={githubIconRef} />
+                      GitHub
+                    </span>
+                  </Link>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </Card>
       </GlowCard>
 

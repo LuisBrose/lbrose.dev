@@ -540,3 +540,21 @@
   pointer-events: none;
   z-index: -1;
 }
+
+@media (orientation: landscape) and (max-width: 1023px) {
+  .nav-desktop {
+    display: none;
+  }
+
+  .nav-mobile-landscape {
+    display: flex;
+  }
+
+  .nav-mobile-menu {
+    display: flex;
+  }
+
+  .nav-spacer {
+    display: none;
+  }
+}

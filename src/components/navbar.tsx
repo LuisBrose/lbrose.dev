@@ -57,7 +57,7 @@ export function Navbar() {
   return (
     <>
       {/* Portrait and Desktop: Full header */}
-      <header className="fixed top-0 z-[100] w-full border-b bg-background landscape:hidden lg:block">
+      <header className="nav-desktop fixed top-0 z-[100] w-full border-b bg-background">
         <div className="container flex h-14 items-center mx-auto px-4 max-w-4xl">
         <Link
           href="#home"
@@ -94,7 +94,7 @@ export function Navbar() {
       </div>
     </header>
     {/* Mobile landscape: Minimal header with burger and theme toggle */}
-    <header className="hidden landscape:flex lg:hidden fixed top-0 z-[100] w-full items-center justify-between px-4 py-2 pointer-events-none">
+    <header className="nav-mobile-landscape hidden fixed top-0 z-[100] w-full items-center justify-between px-4 py-2 pointer-events-none">
       <button
         onClick={handleMenuToggle}
         className="p-2 rounded-md hover:bg-muted transition-colors pointer-events-auto"
@@ -112,7 +112,7 @@ export function Navbar() {
     </header>
     {/* Dropdown menu for mobile landscape */}
     {menuOpen && (
-      <div className="hidden landscape:flex lg:hidden fixed top-12 left-0 right-0 z-[99] bg-background border-b shadow-lg">
+      <div className="nav-mobile-menu hidden fixed top-12 left-0 right-0 z-[99] bg-background border-b shadow-lg">
         <nav className="container mx-auto px-4 py-3 max-w-4xl flex flex-col gap-2">
           {navItems.map((item) => (
             <Link
@@ -131,7 +131,7 @@ export function Navbar() {
       </div>
     )}
     {/* Spacer - only on portrait and desktop */}
-    <div className="h-14 landscape:lg:block landscape:hidden" />
+    <div className="nav-spacer h-14" />
   </>
   )
 }
