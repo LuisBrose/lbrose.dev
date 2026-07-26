@@ -8,10 +8,9 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
 
 const navItems = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#projects", label: "Projects" },
-  { href: "#hosting", label: "Hosting" },
+  { href: "/#home", label: "Home" },
+  { href: "/#about", label: "About" },
+  { href: "/#projects", label: "Projects" },
 ]
 
 export function Navbar() {
@@ -40,15 +39,17 @@ export function Navbar() {
   }
 
   const handleAnchorClick = (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!href.startsWith("#")) return
-    event.preventDefault()
-    const id = href.slice(1)
+    const hashIndex = href.indexOf("#")
+    if (hashIndex === -1) return
+
+    const id = href.slice(hashIndex + 1)
     const el = document.getElementById(id)
     if (!el) return
 
+    event.preventDefault()
     el.scrollIntoView({ behavior: "smooth", block: "start" })
     if (window.history?.replaceState) {
-      window.history.replaceState(null, "", href)
+      window.history.replaceState(null, "", `/#${id}`)
     }
     setMenuOpen(false)
     menuIconRef.current?.stopAnimation()
@@ -60,8 +61,8 @@ export function Navbar() {
       <header className="nav-desktop fixed top-0 z-[100] w-full border-b bg-background">
         <div className="container flex h-14 items-center mx-auto px-4 max-w-4xl">
         <Link
-          href="#home"
-          onClick={handleAnchorClick("#home")}
+          href="/#home"
+          onClick={handleAnchorClick("/#home")}
           onMouseEnter={handleLogoEnter}
           onMouseLeave={() => setIsHovering(false)}
           className="mr-4 inline-flex items-center"

@@ -10,14 +10,33 @@ export interface Product {
   githubUrl?: string
   images?: { src: string; alt: string; srcDark?: string }[]
   projectType?: "personal" | "uni"
-  section: "projects" | "hosting"
 }
 
 export const products: Product[] = [
   {
+    title: "HugoSMP Market",
+    description:
+      "Community platform for HugoSMP, Germany's largest Minecraft server. Tracks auction house and buy order data in real time, processing 30+ million market records with trends, arbitrage insights, and price alerts. Used by 2,500+ registered players.",
+    url: "https://hugosmp-market.net",
+    images: [
+      { src: "/thumbnails/hugomarket-1.png", srcDark: "/thumbnails/hugomarket-1-dark.png", alt: "HugoSMP Market - Homepage" },
+      { src: "/thumbnails/hugomarket-2.png", srcDark: "/thumbnails/hugomarket-2-dark.png", alt: "HugoSMP Market - Price Trends" },
+      { src: "/thumbnails/hugomarket-3.png", srcDark: "/thumbnails/hugomarket-3-dark.png", alt: "HugoSMP Market - Live Market" },
+      { src: "/thumbnails/hugomarket-4.png", srcDark: "/thumbnails/hugomarket-4-dark.png", alt: "HugoSMP Market - Arbitrage" },
+      { src: "/thumbnails/hugomarket-5.png", srcDark: "/thumbnails/hugomarket-5-dark.png", alt: "HugoSMP Market - Schematics" },
+      { src: "/thumbnails/hugomarket-6.png", srcDark: "/thumbnails/hugomarket-6-dark.png", alt: "HugoSMP Market - RTP Tracker" },
+      { src: "/thumbnails/hugomarket-7.png", srcDark: "/thumbnails/hugomarket-7-dark.png", alt: "HugoSMP Market - Server Top" },
+      { src: "/thumbnails/hugomarket-8.png", srcDark: "/thumbnails/hugomarket-8-dark.png", alt: "HugoSMP Market - Spawner Deals" },
+      { src: "/thumbnails/hugomarket-9.png", srcDark: "/thumbnails/hugomarket-9-dark.png", alt: "HugoSMP Market - Maparts" },
+      { src: "/thumbnails/hugomarket-10.png", srcDark: "/thumbnails/hugomarket-10-dark.png", alt: "HugoSMP Market - Portfolio" },
+      { src: "/thumbnails/hugomarket-11.png", srcDark: "/thumbnails/hugomarket-11-dark.png", alt: "HugoSMP Market - Account" },
+    ],
+    projectType: "personal",
+  },
+  {
     title: "Force Push Button",
     description:
-      "VS Code extension that adds force-push buttons to Source Control. Supports multi-repo workspaces and activates only when there are changes to push.",
+      "VS Code extension that adds force-push buttons to Source Control. Supports multi-repo workspaces and activates only when there are changes to push. 800+ installs across VS Marketplace and Open VSX.",
     url: "https://marketplace.visualstudio.com/items?itemName=LuisBrose.force-push-button",
     urlLabel: "VS Marketplace",
     secondaryUrl: "https://open-vsx.org/extension/luisbrose/force-push-button",
@@ -29,7 +48,6 @@ export const products: Product[] = [
       { src: "/thumbnails/force-push-button-3.png", alt: "Force Push Button VS Code Extension - Settings" },
     ],
     projectType: "personal",
-    section: "projects",
   },
   {
     title: "MCP Chatbot",
@@ -46,7 +64,6 @@ export const products: Product[] = [
       { src: "/thumbnails/mcp-chatbot-6.png", srcDark: "/thumbnails/mcp-chatbot-6-dark.png", alt: "MCP Chatbot - System Messages" },
     ],
     projectType: "uni",
-    section: "projects",
   },
   {
     title: "Multiplayer Survival Game",
@@ -68,33 +85,5 @@ export const products: Product[] = [
       { src: "/thumbnails/project-atze-9.png", alt: "Multiplayer Survival Game - New Screenshot" },
     ],
     projectType: "uni",
-    section: "projects",
-  },
-  {
-    title: "Poker Leaderboard",
-    description: "Track poker performance and stats between friends. View profit and loss, session history, and rankings over time.",
-    url: "https://poker.lbrose.dev",
-    githubUrl: "https://github.com/LuisBrose/PokerLeaderboard",
-    images: [
-      { src: "/thumbnails/poker-leaderboard-1.png", alt: "Poker Leaderboard - Performance Visualization" },
-      { src: "/thumbnails/poker-leaderboard-2.png", alt: "Poker Leaderboard - Leaderboard" },
-      { src: "/thumbnails/poker-leaderboard-3.png", alt: "Poker Leaderboard - Session History" },
-    ],
-    projectType: "personal",
-    section: "projects",
-  },
-  {
-    title: "AIOStreams",
-    description:
-      "Self-hosted Stremio super-addon that aggregates multiple addons and debrid/usenet sources into one highly customisable stream hub.",
-    note: "Access to my instance is password-protected feel free to reach out via contact@lbrose.dev for the password.",
-    url: "https://aiostreams.lbrose.dev",
-    githubUrl: "https://github.com/Viren070/AIOStreams",
-    images: [
-      { src: "/thumbnails/aiostreams-1.png", alt: "AIOStreams - Homepage" },
-      { src: "/thumbnails/aiostreams-2.png", alt: "AIOStreams - Services" },
-      { src: "/thumbnails/aiostreams-3.png", alt: "AIOStreams - Filters" },
-    ],
-    section: "hosting",
   },
 ]

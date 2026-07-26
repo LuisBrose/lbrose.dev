@@ -325,26 +325,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container mx-auto px-4 py-16 max-w-4xl space-y-10">
+      <section className="container mx-auto px-4 py-16 max-w-4xl">
         <div id="projects" className="scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-            {products
-              .filter((product) => product.section === "projects")
-              .map((product) => (
-                <ProductCard key={product.title} {...product} />
-              ))}
-          </div>
-        </div>
-
-        <div id="hosting" className="scroll-mt-24">
-          <h2 className="text-2xl font-bold mb-6">Hosting</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-            {products
-              .filter((product) => product.section === "hosting")
-              .map((product) => (
-                <ProductCard key={product.title} {...product} />
-              ))}
+            {products.map((product) => (
+              <ProductCard key={product.title} {...product} />
+            ))}
           </div>
         </div>
       </section>
