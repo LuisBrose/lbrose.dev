@@ -18,11 +18,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Update GitHub streak cards
-        run: |
-          set -euo pipefail
-          TS="$(date +%s)"
-          curl -fsSL "https://streak-stats.demolab.com/?user=LuisBrose&theme=default&hide_border=true&ts=${TS}" -o public/gh-streak.svg
-          curl -fsSL "https://streak-stats.demolab.com/?user=LuisBrose&theme=dark&hide_border=true&ts=${TS}" -o public/gh-streak-dark.svg
+        uses: DenverCoder1/github-readme-streak-stats@main
+        with:
+          options: user=LuisBrose&theme=default&hide_border=true
+          path: public/gh-streak.svg
+          token: ${{ secrets.PAT_GITHUB_CARDS }}
+
+      - name: Update GitHub streak cards (dark)
+        uses: DenverCoder1/github-readme-streak-stats@main
+        with:
+          options: user=LuisBrose&theme=dark&hide_border=true
+          path: public/gh-streak-dark.svg
+          token: ${{ secrets.PAT_GITHUB_CARDS }}
 
       - name: Update GitHub languages cards
         run: |
@@ -30,6 +37,16 @@ jobs:
           TS="$(date +%s)"
           curl -fsSL "https://readme-stats-fast.vercel.app/api/top-langs/?username=LuisBrose&layout=compact&theme=default&hide_border=true&ts=${TS}" -o public/gh-langs.svg
           curl -fsSL "https://readme-stats-fast.vercel.app/api/top-langs/?username=LuisBrose&layout=compact&theme=dark&hide_border=true&ts=${TS}" -o public/gh-langs-dark.svg
+
+      - name: Validate generated cards
+        run: |
+          set -euo pipefail
+          for svg in public/gh-*.svg; do
+            if grep -q "Failed to retrieve contributions" "$svg"; then
+              echo "::error::${svg} contains a streak API error response"
+              exit 1
+            fi
+          done
 
       - name: "Debug: show git diff summary"
         run: |
