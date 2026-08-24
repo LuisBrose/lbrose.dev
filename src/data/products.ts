@@ -16,7 +16,7 @@ export const products: Product[] = [
   {
     title: "HugoSMP Market",
     description:
-      "Community platform for HugoSMP, Germany's largest Minecraft server. Tracks auction house and buy order data in real time, processing 30+ million market records with trends, arbitrage insights, and price alerts. Used by 2,500+ registered players.",
+      "Community platform for HugoSMP, Germany's largest Minecraft server. Tracks auction house and buy order data in real time, processing 30+ million market records with trends, arbitrage insights, and price alerts. Used by 3,800+ registered players.",
     url: "https://hugosmp-market.net",
     images: [
       { src: "/thumbnails/hugomarket-1.png", srcDark: "/thumbnails/hugomarket-1-dark.png", alt: "HugoSMP Market - Homepage" },
